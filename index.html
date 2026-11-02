@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="ru" data-design="classic">
+<script>try{var d=localStorage.getItem('edo-design');if(d)document.documentElement.dataset.design=d}catch(e){}</script>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Проверка Excel</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF453A'/%3E%3Cstop offset='1' stop-color='%23D70015'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Cpath d='M20 14h17l9 9v27H20z' fill='none' stroke='white' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M25 41c4-6 6 2 9-3s4 2 7-1' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='14' r='7' fill='%23FFE01B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F2F7; --cell:#FFFFFF; --label:#000000; --sec:#6C6C70; --ter:#AEAEB2; --sep:rgba(60,60,67,.29); --fill:rgba(118,118,128,.12);
+  --thumb:#FFFFFF; --on-tint:#FFFFFF; --tint:#FF3B30; --tint-strong:#D70015; --link:#D70015; --red:#FF3B30; --blue:#2F6BFF; --yellow:#FFE01B; --on-yellow:#1B1530; --y-text:#B58B00; --green:#34C759; --orange:#FF9500; --gray:#8E8E93;
+  --j-key:#3A3A3C; --j-str:#248A3D; --j-num:#D70015; --j-null:#8E8E93; --mark:#FFD6D3; --mark-ink:#000;
+  --cv-red:#FF3B30; --cv-gray:#8E8E93; --cv-ink:#000000; --page:#1C1C1E;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Inter","Segoe UI",Roboto,system-ui,sans-serif;
+  --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#000000; --cell:#1C1C1E; --label:#FFFFFF; --sec:#98989F; --ter:#5A5A5E; --sep:rgba(84,84,88,.65); --fill:rgba(118,118,128,.24);
+    --thumb:#636366; --tint:#FF453A; --tint-strong:#FF453A; --link:#FF453A; --red:#FF453A; --blue:#3D7BFF; --yellow:#FFE01B; --on-yellow:#1B1530; --y-text:#FFE01B; --green:#30D158; --orange:#FF9F0A; --gray:#8E8E93;
+    --j-key:#E5E5EA; --j-str:#30D158; --j-num:#FF6961; --j-null:#8E8E93; --mark:#7A1C17; --mark-ink:#FFF;
+    --cv-red:#FF453A; --cv-ink:#FFFFFF;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#000000; --cell:#1C1C1E; --label:#FFFFFF; --sec:#98989F; --ter:#5A5A5E; --sep:rgba(84,84,88,.65); --fill:rgba(118,118,128,.24);
+  --thumb:#636366; --tint:#FF453A; --tint-strong:#FF453A; --link:#FF453A; --red:#FF453A; --blue:#3D7BFF; --yellow:#FFE01B; --on-yellow:#1B1530; --y-text:#FFE01B; --green:#30D158; --orange:#FF9F0A; --gray:#8E8E93;
+  --j-key:#E5E5EA; --j-str:#30D158; --j-num:#FF6961; --j-null:#8E8E93; --mark:#7A1C17; --mark-ink:#FFF;
+  --cv-red:#FF453A; --cv-ink:#FFFFFF;
+  color-scheme:dark;
+}
+/* ===== Дизайны: Классика (по умолчанию), Didox, Дождь, Облака, Графит ===== */
+:root[data-design="didox"]{--tint:#5B4CF5; --tint-strong:#4434D6; --link:#4434D6; --mark:#DCD8FF; --cv-red:#5B4CF5; --blue:#2F6BFF}
+:root[data-design="mono"]{--tint:#3A3A3C; --tint-strong:#1C1C1E; --link:#1C1C1E; --mark:#E5E5EA; --cv-red:#636366}
+@media (prefers-color-scheme:dark){
+  :root[data-design="didox"]:not([data-theme="light"]){--tint:#7C6CFF; --tint-strong:#6A59FF; --link:#9A8CFF; --mark:#3A3170; --cv-red:#8B7DFF; --blue:#3D7BFF}
+  :root[data-design="mono"]:not([data-theme="light"]){--tint:#E5E5EA; --tint-strong:#F2F2F7; --link:#F2F2F7; --on-tint:#000000; --mark:#48484A; --cv-red:#AEAEB2}
+}
+:root[data-design="didox"][data-theme="dark"]{--tint:#7C6CFF; --tint-strong:#6A59FF; --link:#9A8CFF; --mark:#3A3170; --cv-red:#8B7DFF; --blue:#3D7BFF}
+:root[data-design="mono"][data-theme="dark"]{--tint:#E5E5EA; --tint-strong:#F2F2F7; --link:#F2F2F7; --on-tint:#000000; --mark:#48484A; --cv-red:#AEAEB2}
+:root[data-design="clouds"]{--bg:#68B8D7; --tint:#1E88C8; --tint-strong:#1572AE; --link:#1572AE; --mark:#CDE9F7; --cv-red:#1E88C8}
+@media (prefers-color-scheme:dark){
+  :root[data-design="clouds"]:not([data-theme="light"]){--bg:#0B1624; --tint:#4FB3E8; --tint-strong:#2E9BD6; --link:#6CC4F0; --mark:#123E5A; --cv-red:#4FB3E8}
+}
+:root[data-design="clouds"][data-theme="dark"]{--bg:#0B1624; --tint:#4FB3E8; --tint-strong:#2E9BD6; --link:#6CC4F0; --mark:#123E5A; --cv-red:#4FB3E8}
+:root[data-design="rain"]{--bg:#E4EAF0; --tint:#3B6E8F; --tint-strong:#2C5873; --link:#2C5873; --mark:#D3E3EE; --cv-red:#3F7CA6; --cv-gray:#7A93A8}
+@media (prefers-color-scheme:dark){
+  :root[data-design="rain"]:not([data-theme="light"]){--bg:#090E14; --tint:#5FA8D3; --tint-strong:#4A95C2; --link:#7DBBE0; --mark:#1E3A50; --cv-red:#7DBBE0; --cv-gray:#4F6577}
+}
+:root[data-design="rain"][data-theme="dark"]{--bg:#090E14; --tint:#5FA8D3; --tint-strong:#4A95C2; --link:#7DBBE0; --mark:#1E3A50; --cv-red:#7DBBE0; --cv-gray:#4F6577}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font:400 17px/1.35 var(--sans);color:var(--label);-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+
+/* ===== Режим «телефон»: на мобильном — на весь экран ===== */
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 52px)}
+body{background:var(--bg)}
+.stage{position:relative;z-index:1}
+.device{position:relative}
+.screen{position:relative;max-width:1280px;margin:0 auto;min-height:100%}
+body{overflow-x:hidden}
+.topbar{margin:0 calc(50% - 50vw)}
+.nav{max-width:1280px;margin:0 auto}
+@media (min-width:800px){.large{padding-top:8px}}
+/* Широкий экран: по центру, на всю высоту; слева ввод, справа результат со своей прокруткой */
+.cols{display:block}
+@media (min-width:1000px){
+  .screen{display:flex;flex-direction:column;height:100vh;min-height:620px}
+  .nav{padding:0 16px}
+  .large{text-align:center;padding:0 24px}
+  .cols{flex:1;min-height:0;display:grid;grid-template-columns:minmax(360px,440px) minmax(0,1fr);gap:24px;padding:0 24px 24px}
+  .cols .group,.cols .hero,.cols .seg,.cols .search,.cols .json{margin-left:0;margin-right:0}
+  .cols .btn-fill{width:100%;margin-left:0;margin-right:0}
+  .cols .sec-h,.cols .sec-f{margin-left:16px;margin-right:16px}
+  .side{display:flex;flex-direction:column;min-height:0;overflow:auto;scrollbar-width:none}
+  .side::-webkit-scrollbar{display:none}
+  .side>*{flex-shrink:0}
+  #dropzone{flex:1 1 auto;display:flex;flex-direction:column;min-height:200px}
+  .side textarea{flex:1 1 auto;min-height:0;max-height:none;resize:none}
+  #out{min-height:0;overflow:auto;scrollbar-width:none;padding-bottom:8px}
+  #out::-webkit-scrollbar{display:none}
+  #out>.sec-h:first-child,#out>.hero:first-child{margin-top:24px}
+  .empty{min-height:100%;display:flex;flex-direction:column;justify-content:center;padding:24px 0}
+  .cols .empty>*{width:100%;max-width:560px;margin-left:auto;margin-right:auto}
+  .cols .empty>.sec-h{padding:0 16px}
+  .empty .ttl{font:600 22px/1.25 var(--sans);text-align:center;margin-bottom:4px}
+  .empty .sub{color:var(--sec);font-size:15px;text-align:center;margin-bottom:8px}
+  .cols .hero dl{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .pad-end{display:none}
+}
+.empty .ttl,.empty .sub{display:none}
+@media (min-width:1000px){.empty .ttl,.empty .sub{display:block}}
+@media (min-width:1280px){
+  .signer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 16px;align-items:start}
+  .signer .sg-a,.signer .sg-b{min-width:0}
+  .signer .sg-b>.sec-h:first-child{margin-top:0}
+}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(20px) saturate(1.8);-webkit-backdrop-filter:blur(20px) saturate(1.8)}
+
+/* ===== Dynamic Island / уведомление ===== */
+.island{position:fixed;z-index:70;left:50%;top:calc(env(safe-area-inset-top,0px) + 10px);box-shadow:0 10px 30px -10px rgba(0,0,0,.45);transform:translateX(-50%);min-width:126px;height:37px;border-radius:20px;background:#000;color:#fff;
+  display:flex;align-items:center;justify-content:center;gap:8px;padding:0 14px;font:600 14px/1 var(--sans);opacity:0;pointer-events:none;
+  transition:min-width .35s cubic-bezier(.3,1.4,.5,1),height .35s cubic-bezier(.3,1.4,.5,1),opacity .2s}
+.island span{opacity:0;white-space:nowrap;transition:opacity .2s}
+.island.wide{min-width:250px;height:44px;opacity:1}
+.island.wide span{opacity:1;transition-delay:.12s}
+.island .dot{width:9px;height:9px;border-radius:50%;background:var(--yellow)}
+
+/* ===== Навбар ===== */
+.topbar{background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(20px) saturate(1.8);-webkit-backdrop-filter:blur(20px) saturate(1.8);border-bottom:.5px solid transparent;transition:border-color .2s}
+.topbar.solid{border-bottom-color:var(--sep)}
+.nav{height:44px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 8px}
+.nav .t{font-weight:600;opacity:0;transition:opacity .2s}
+.topbar.solid .nav .t{opacity:1}
+.nav .r{justify-self:end}
+.link{border:0;background:none;color:var(--link);font:400 17px/1 var(--sans);padding:0 8px;min-height:44px;cursor:pointer;border-radius:8px}
+.link:hover{opacity:.7}
+.link:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,.cell:focus-visible{outline:2px solid var(--tint);outline-offset:2px}
+
+.large{padding:28px 16px 0}
+.row-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.link.small{font-size:13px;min-height:0;padding:2px 4px}
+.large h1{font:700 34px/1.2 var(--sans);letter-spacing:.01em;margin:0}
+.large h1 .y{color:var(--y-text)}
+/* «Очистить» — справа в строке заголовка, над результатом; видна, только когда есть что очищать */
+.large{position:relative}
+.clear-all{position:absolute;right:16px;top:28px;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:0;border-radius:18px;background:var(--cell);color:var(--link);font:600 15px/1 var(--sans);cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.08);animation:pop .25s ease-out}
+.clear-all svg{width:17px;height:17px}
+.clear-all:hover{background:color-mix(in srgb,var(--tint) 12%,var(--cell))}
+.clear-all[hidden]{display:none}
+@media (min-width:1000px){.clear-all{right:24px;top:auto;bottom:0}}
+/* на телефоне результат ниже полей — кнопка плавает в правом нижнем углу */
+@media (max-width:999px){.clear-all{position:fixed;z-index:40;top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);height:44px;padding:0 18px;border-radius:22px;box-shadow:0 8px 24px rgba(0,0,0,.22)}}
+@keyframes pop{from{opacity:0;transform:scale(.9)}}
+.side>.sec-h::before{content:"";display:inline-block;flex:none;width:6px;height:6px;border-radius:50%;background:var(--yellow);margin:0 8px 1px 0;vertical-align:middle}
+.side>.sec-h.row-h>span{flex:1}
+.large p{margin:4px 0 0;color:var(--sec);font-size:15px}
+
+/* ===== Сгруппированные списки ===== */
+.sec-h{font-size:13px;color:var(--sec);margin:24px 32px 7px}
+.sec-f{font-size:13px;color:var(--sec);margin:8px 32px 0;line-height:1.4}
+.group{background:var(--cell);border-radius:12px;margin:0 16px;overflow:hidden}
+.cell{display:flex;align-items:center;gap:12px;min-height:44px;padding:11px 16px;position:relative;font-size:17px}
+.cell+.cell::before{content:"";position:absolute;top:0;left:16px;right:0;height:.5px;background:var(--sep)}
+.cell.ico+.cell::before,.cell.ico+.cell.ico::before{left:57px}
+.cell .lbl{flex:1 1 auto;min-width:0}
+.cell .val{color:var(--sec);text-align:right;overflow-wrap:anywhere;max-width:62%}
+.cell .val.mono{font:13px/1.35 var(--mono)}
+.cell.tap{cursor:pointer}
+.cell.tap:active{background:var(--fill)}
+.chev{color:var(--ter);flex:none}
+.sq{width:29px;height:29px;border-radius:7px;display:grid;place-items:center;color:#fff;flex:none}
+.sq svg{width:17px;height:17px}
+.sq.green{background:var(--green)} .sq.orange{background:var(--orange)} .sq.red{background:var(--red)} .sq.gray{background:var(--gray)}
+.sq.num{font:600 15px/1 var(--sans)}
+.multi{flex-direction:row;align-items:flex-start}
+.multi .lbl{font-size:15px;line-height:1.35;padding-top:5px}
+textarea{display:block;width:100%;min-height:150px;max-height:40vh;resize:vertical;border:0;background:transparent;color:var(--label);padding:12px 16px;font:12px/1.5 var(--mono);word-break:break-all}
+textarea::placeholder{color:var(--ter)}
+.drop-over{box-shadow:0 0 0 2px var(--tint)}
+.btn-fill{display:block;width:calc(100% - 32px);margin:16px 16px 0;height:50px;border:0;border-radius:14px;background:var(--tint-strong);color:var(--on-tint);font:600 17px/1 var(--sans);cursor:pointer;transition:opacity .2s}
+.btn-fill:active{opacity:.75}
+.btn-fill.busy{opacity:.6}
+.btn-fill:disabled{opacity:.6;cursor:default}
+/* жёлтый — только для главного действия, как кнопка «Создать» в Didox */
+.btn-fill.accent{background:var(--yellow);color:var(--on-yellow)}
+textarea.ids{min-height:88px;max-height:30vh}
+/* Просмотр документа: язык, вкладки документов, сам документ */
+.lang{display:inline-flex;background:var(--fill);border-radius:8px;padding:2px;gap:2px}
+.lang button{border:0;background:transparent;color:var(--label);font:600 13px/1 var(--sans);padding:7px 12px;border-radius:6px;cursor:pointer}
+.lang button[aria-checked="true"]{background:var(--thumb);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.doc-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:12px 16px 0}
+.doc-tabs button{border:0;background:var(--cell);color:var(--label);font:500 13px/1.2 var(--sans);padding:7px 12px;border-radius:16px;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.doc-tabs button[aria-selected="true"]{background:var(--tint-strong);color:var(--on-tint)}
+.cols .doc-tabs{margin-left:0;margin-right:0}
+/* Документ на весь экран: сверху панель «Назад» и действия, ниже сам документ */
+.viewer{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:var(--bg);animation:vwIn .2s ease-out}
+.viewer[hidden]{display:none}
+@keyframes vwIn{from{opacity:0;transform:translateY(12px)}}
+.vw-bar{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px;padding:calc(env(safe-area-inset-top,0px) + 10px) 12px 10px;background:var(--cell);border-bottom:.5px solid var(--sep);box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.vw-back{display:inline-flex;align-items:center;gap:2px;border:0;background:transparent;color:var(--link);font:600 17px/1 var(--sans);height:36px;padding:0 8px 0 2px;cursor:pointer;border-radius:9px}
+.vw-back svg{width:22px;height:22px}
+.vw-back:hover{background:var(--fill)}
+.vw-title{flex:1;min-width:120px;font:600 17px/1.2 var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vw-act{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.tb{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border:0;border-radius:9px;background:var(--fill);color:var(--link);font:600 14px/1 var(--sans);cursor:pointer;white-space:nowrap}
+.tb svg{width:17px;height:17px;flex:none}
+.tb:hover{background:color-mix(in srgb,var(--tint) 14%,var(--fill))}
+.tb.main{background:var(--tint-strong);color:var(--on-tint)}
+.viewer .doc-tabs{margin:0;padding:8px 12px;background:var(--cell);border-bottom:.5px solid var(--sep)}
+.viewer .doc-tabs button{background:var(--fill)}
+.vw-body{flex:1;min-height:0;position:relative;background:color-mix(in srgb,var(--label) 6%,var(--bg))}
+.vw-frame{display:block;width:100%;height:100%;border:0;background:#fff}
+.vw-msg{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:var(--sec);font-size:16px}
+.vw-msg .group{width:min(520px,100%);text-align:left}
+@media (max-width:760px){.tb span{display:none}.tb{padding:0 10px}.vw-act{width:100%;justify-content:flex-end}.vw-act .lang{margin-right:auto}}
+.cell .lbl a{color:var(--link);text-decoration:none;white-space:nowrap}
+.cell .lbl .id{font:13px/1.35 var(--mono);overflow-wrap:anywhere}
+.iss .w{display:block;font-size:13px;color:var(--sec);margin-bottom:2px}
+.iss .v{display:block;font:12px/1.4 var(--mono);color:var(--sec);margin-top:3px;overflow-wrap:anywhere}
+.more{font-size:13px;color:var(--sec);padding:10px 16px}
+.iss .v.fixed{color:var(--green)}
+
+/* Карточка документа */
+.hero{margin:16px 16px 0;padding:18px 18px 16px;border-radius:16px;background:var(--cell);display:grid;gap:12px}
+.hero .kind{display:flex;align-items:center;gap:12px}
+.hero .kind b{font:700 22px/1.2 var(--sans)}
+.hero .badge{width:44px;height:44px;border-radius:11px;background:var(--tint);color:var(--on-tint);display:grid;place-items:center;flex:none}
+.hero dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;margin:0}
+.hero dt{font-size:13px;color:var(--sec)}
+.hero dd{margin:2px 0 0;font-weight:600;font-size:16px;overflow-wrap:anywhere}
+
+/* Сегментированный переключатель */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--fill);border-radius:9px;padding:2px;margin:20px 16px 0;position:relative}
+.seg button{position:relative;z-index:1;border:0;background:transparent;color:var(--label);font:600 13px/1 var(--sans);min-height:32px;border-radius:7px;cursor:pointer}
+.seg .thumb{position:absolute;z-index:0;top:2px;bottom:2px;left:2px;border-radius:7px;background:var(--thumb);box-shadow:0 3px 8px rgba(0,0,0,.12),0 3px 1px rgba(0,0,0,.04);transition:transform .3s cubic-bezier(.3,1.2,.5,1)}
+[role=tabpanel][hidden]{display:none}
+
+/* Контакт-заголовок подписанта */
+.contact{display:grid;justify-items:center;text-align:center;padding:22px 16px 18px;gap:4px}
+.ava{width:76px;height:76px;border-radius:50%;background:linear-gradient(180deg,#A5A5AA,#86868B);color:#fff;font:600 30px/1 var(--sans);display:grid;place-items:center;margin-bottom:8px}
+.contact .nm{font:600 22px/1.25 var(--sans);overflow-wrap:anywhere}
+.contact .rl{color:var(--sec);font-size:15px}
+.signer + .signer{margin-top:8px}
+.appear{animation:appear .35s ease-out both}
+@keyframes appear{from{opacity:0;transform:translateY(10px)}}
+
+/* JSON */
+.search{display:flex;align-items:center;gap:6px;background:var(--fill);border-radius:10px;height:36px;padding:0 8px;margin:16px 16px 0;color:var(--sec)}
+.search input{flex:1;min-width:0;border:0;background:transparent;color:var(--label);font:17px var(--sans);height:100%}
+.search input::placeholder{color:var(--sec)}
+.search input:focus-visible{outline:none}
+.search:focus-within{box-shadow:0 0 0 2px var(--tint)}
+.jbar{display:flex;flex-wrap:wrap;gap:0 2px;align-items:center;margin:6px 8px 4px}
+.jbar .link{font-size:15px;padding:0 6px}
+.hero,.seg,.signer,.search{scroll-margin-top:60px}
+.jbar .count{margin-left:auto;margin-right:8px;font-size:13px;color:var(--sec)}
+.mini{display:inline-grid;grid-auto-flow:column;background:var(--fill);border-radius:8px;padding:2px;margin:0 8px}
+.mini button{border:0;background:transparent;color:var(--label);font:600 13px/1 var(--sans);min-height:30px;padding:0 12px;border-radius:6px;cursor:pointer}
+.mini button[aria-pressed="true"]{background:var(--thumb);box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.json{padding:12px 8px 12px 12px;overflow-x:auto;font:12px/1.6 var(--mono);background:var(--cell);border-radius:12px;margin:0 16px}
+.json .kids{margin-left:14px;border-left:1px solid var(--sep);padding-left:8px}
+.json summary{cursor:pointer;list-style:none;white-space:nowrap;border-radius:5px}
+.json summary::-webkit-details-marker{display:none}
+.json summary::before{content:"";display:inline-block;width:6px;height:6px;margin:0 6px 2px 2px;border-right:1.5px solid var(--tint);border-bottom:1.5px solid var(--tint);transform:rotate(-45deg);transition:transform .2s}
+.json details[open]>summary::before{transform:rotate(45deg)}
+.json .leaf{padding-left:14px;white-space:pre-wrap;word-break:break-word}
+.k{color:var(--j-key)} .s{color:var(--j-str)} .n{color:var(--j-num)} .b,.z{color:var(--j-null)}
+.meta{color:var(--sec);font:11px var(--sans);margin-left:6px}
+mark{background:var(--mark);color:var(--mark-ink);border-radius:3px;padding:0 1px}
+pre.raw{margin:0;white-space:pre-wrap;word-break:break-word}
+
+/* Переключатель iOS */
+.switch{position:relative;width:51px;height:31px;flex:none}
+.switch input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;z-index:1}
+.switch i{position:absolute;inset:0;border-radius:16px;background:var(--fill);transition:background .2s}
+.switch i::after{content:"";position:absolute;left:2px;top:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.15),0 1px 1px rgba(0,0,0,.16);transition:transform .25s cubic-bezier(.3,1.3,.5,1)}
+.switch input:checked+i{background:var(--green)}
+.switch input:checked+i::after{transform:translateX(20px)}
+.switch input:focus-visible+i{outline:2px solid var(--tint);outline-offset:2px}
+
+.pad-end{height:48px}
+/* Фон */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(80px)}
+.blob.b1{width:46vmax;height:46vmax;left:-14vmax;top:-16vmax;background:color-mix(in srgb,var(--tint) 16%,transparent);animation:drift1 26s ease-in-out infinite alternate}
+.blob.b2{width:40vmax;height:40vmax;right:-12vmax;bottom:-14vmax;background:color-mix(in srgb,var(--gray) 14%,transparent);animation:drift2 30s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(16vw,12vh) scale(1.12)}}
+@keyframes drift2{to{transform:translate(-18vw,-10vh) scale(.92)}}
+canvas#bg{position:absolute;inset:0;width:100%;height:100%;opacity:.7}
+#vanta{position:absolute;inset:0}
+#vanta[hidden]{display:none}
+:root[data-design="clouds"] .blob{display:none}
+/* Выбор дизайна: карточки с превью */
+.designs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:12px}
+@media (max-width:420px){.designs{gap:6px;padding:10px}.dz{font-size:11px}}
+.dz{border:0;background:var(--fill);border-radius:12px;padding:6px 6px 8px;cursor:pointer;color:var(--label);font:500 12px/1.2 var(--sans);display:flex;flex-direction:column;align-items:stretch;gap:6px;transition:box-shadow .2s}
+.dz i{display:block;height:40px;border-radius:8px}
+.dz[aria-checked="true"]{box-shadow:0 0 0 2px var(--tint)}
+.dz-classic i{background:radial-gradient(circle at 80% 30%,#FFE01B 0 5px,transparent 6px),linear-gradient(135deg,#FF453A,#D70015)}
+.dz-didox i{background:radial-gradient(circle at 80% 30%,#FFE01B 0 5px,transparent 6px),linear-gradient(135deg,#7C6CFF,#2F6BFF)}
+.dz-rain i{background:radial-gradient(circle at 80% 30%,#FFE01B 0 5px,transparent 6px),repeating-linear-gradient(105deg,rgba(255,255,255,.55) 0 1px,transparent 1px 7px),linear-gradient(#5E7A92,#22364A)}
+.dz-clouds i{background:radial-gradient(circle at 80% 30%,#FFE01B 0 5px,transparent 6px),radial-gradient(ellipse at 30% 78%,#fff 0 24%,transparent 25%),radial-gradient(ellipse at 62% 84%,#ADC1DE 0 22%,transparent 23%),linear-gradient(#68B8D7,#A9D8EC)}
+.dz-mono i{background:radial-gradient(circle at 80% 30%,#FFE01B 0 5px,transparent 6px),linear-gradient(135deg,#8E8E93,#2C2C2E)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+body.still .blob{animation-play-state:paused}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><div id="vanta" hidden></div><div class="blob b1"></div><div class="blob b2"></div><canvas id="bg"></canvas></div>
+<div class="stage">
+ <div class="device">
+  <div class="island" id="toast" role="status" aria-live="polite"><i class="dot" aria-hidden="true"></i><span id="toastText"></span></div>
+  <div class="screen" id="screen">
+   <div class="large" id="large">
+     <h1>Проверка <span class="y">Excel</span></h1>
+     <button class="clear-all" id="clear" hidden title="Очистить результат и поля (Esc)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>Очистить</button>
+   </div>
+
+   <div class="cols">
+   <div class="side">
+   <div class="sec-h">Проверка Excel-шаблона</div>
+   <div class="group" id="xlsZone">
+     <label class="cell tap ico" for="xls">
+       <span class="sq green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M10 4v16"/></svg></span>
+       <span class="lbl">Загрузить шаблон .xlsx</span>
+       <svg class="chev" width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l6 6-6 6"/></svg>
+     </label>
+     <input type="file" id="xls" accept=".xlsx,.xls" hidden>
+   </div>
+   <p class="sec-f">Счёт-фактура, ТТН, Гибридная ЭСФ, Произвольный документ, загрузка ИКПУ — тип определяется сам. Проверяются поля по инструкции и дубли кодов маркировки. Файл проверяется на устройстве и никуда не отправляется.</p>
+
+   <div class="sec-h">Поиск дублей маркировки</div>
+   <div class="group" id="mkZone">
+     <textarea id="mkSrc" class="ids" spellcheck="false" aria-label="Коды маркировки" placeholder="Вставьте коды маркировки — по одному на строку или через пробел"></textarea>
+     <label class="cell tap ico" for="mkFile" style="border-top:.5px solid var(--sep)">
+       <span class="sq orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 5v14M7 5v14M11 5v14M14 5v14M17 5v14M20 5v14"/></svg></span>
+       <span class="lbl">Открыть Excel, CSV или TXT с кодами</span>
+       <svg class="chev" width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l6 6-6 6"/></svg>
+     </label>
+     <input type="file" id="mkFile" accept=".xlsx,.xls,.csv,.txt" hidden>
+   </div>
+   <button class="btn-fill" id="mkGo">Найти дубли</button>
+   <p class="sec-f">Ищет одинаковые коды по всему списку или по всем листам Excel и показывает, где каждый повтор. Коды проверяются на устройстве и никуда не отправляются.</p>
+
+   <div class="sec-h">Оформление</div>
+   <div class="group">
+     <div class="designs" role="radiogroup" aria-label="Дизайн">
+       <button class="dz dz-classic" data-d="classic" role="radio" aria-checked="false"><i></i>Классика</button>
+       <button class="dz dz-didox" data-d="didox" role="radio" aria-checked="false"><i></i>Didox</button>
+       <button class="dz dz-rain" data-d="rain" role="radio" aria-checked="false"><i></i>Дождь</button>
+       <button class="dz dz-clouds" data-d="clouds" role="radio" aria-checked="false"><i></i>Облака</button>
+       <button class="dz dz-mono" data-d="mono" role="radio" aria-checked="false"><i></i>Графит</button>
+     </div>
+     <div class="cell" style="border-top:.5px solid var(--sep)"><span class="lbl" id="motionLbl">Анимация фона</span><span class="switch"><input type="checkbox" id="motion" checked aria-labelledby="motionLbl"><i></i></span></div>
+   </div>
+   <p class="sec-f">Шаблоны и коды проверяются на устройстве и никуда не отправляются.</p>
+   </div>
+   <div id="out">
+    <div class="empty">
+     <div class="ttl">Здесь появится результат проверки</div>
+     <div class="sub">Ошибки шаблона и дубли кодов маркировки</div>
+     <div class="sec-h">Как пользоваться</div>
+     <div class="group">
+       <div class="cell ico multi"><span class="sq gray num">1</span><span class="lbl">Загрузите заполненный шаблон Didox .xlsx — тип определится сам</span></div>
+       <div class="cell ico multi"><span class="sq gray num">2</span><span class="lbl">Для дублей вставьте коды маркировки или откройте файл с ними</span></div>
+       <div class="cell ico multi"><span class="sq gray num">3</span><span class="lbl">Скачайте исправленный шаблон или скопируйте отчёт</span></div>
+     </div>
+    </div>
+   </div>
+
+   </div>
+   <div class="pad-end"></div>
+  </div>
+ </div>
+</div>
+<script>
+/* ===== Фон: сцена зависит от дизайна — сеть узлов, летящие документы, дождь, облака или только символы base64 ===== */
+(function () {
+  const cv = document.getElementById('bg'), ctx = cv.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const CH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+  let W = 0, H = 0, nodes = [], packets = [], glyphs = [], sigs = [], ripples = [];
+  let mx = 0, my = 0, tx = 0, ty = 0, px = -999, py = -999;
+  let raf = 0, last = performance.now(), nextSig = 1200, nextPkt = 0, burst = 0, paused = false;
+  let C = {};
+  const LINK = 150;
+  let hold = false;
+  const SCENES = { classic: 'net', didox: 'docs', rain: 'rain', mono: 'glyphs', clouds: 'clouds' };
+  let scene = 'net', drops = [], splashes = [], docs = [], flash = 0, nextFlash = 0;
+  function colors() {
+    const cs = getComputedStyle(document.documentElement), g = n => cs.getPropertyValue(n).trim();
+    C = { red: g('--cv-red'), gray: g('--cv-gray'), ink: g('--cv-ink'), yellow: g('--yellow') };
+  }
+  function mkGlyph(any) {
+    return { x: Math.random() * W, y: any ? Math.random() * H : H + 20, v: 10 + Math.random() * 22, ch: CH[Math.random() * CH.length | 0], sz: 9 + Math.random() * 7, z: .3 + Math.random() * .7, sw: Math.random() * 6.28 };
+  }
+  function resize() {
+    colors();
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.min(Math.round(W * H / 16000), 110);
+    nodes = Array.from({ length: n }, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * 14, vy: (Math.random() - .5) * 14, r: 1.2 + Math.random() * 1.8, hot: 0 }));
+    glyphs = Array.from({ length: Math.min(Math.round(W * H / 14000), 140) }, () => mkGlyph(true));
+    drops = Array.from({ length: Math.min(Math.round(W * H / 4500), 280) }, () => mkDrop(true));
+    docs = Array.from({ length: Math.min(Math.round(W * H / 26000), 50) }, () => mkDoc(true));
+    packets = [];
+    if (reduce.matches || paused) draw(performance.now());
+  }
+  // дождь: косые капли, ветер следует за мышью, внизу всплески; изредка далёкая молния
+  function mkDrop(any) {
+    const z = .35 + Math.random() * .65;
+    return { x: Math.random() * (W + 200) - 100, y: any ? Math.random() * H : -20 - Math.random() * 120, z, v: 520 + z * 520, len: 8 + z * 18, floor: H * (.86 + Math.random() * .14) };
+  }
+  function drawRain(dt, now) {
+    const wind = -.16 + mx * .6, boost = 1 + burst * 1.5;
+    ctx.strokeStyle = C.red; ctx.lineCap = 'round';
+    drops.forEach(d => {
+      const dy = d.v * dt * boost; d.y += dy; d.x += dy * wind;
+      if (d.y > d.floor) { if (d.z > .6) splashes.push({ x: d.x, y: d.floor, t: 0, z: d.z }); Object.assign(d, mkDrop(false)); return; }
+      ctx.globalAlpha = .12 + .4 * d.z; ctx.lineWidth = .6 + d.z * .9;
+      ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x - d.len * wind, d.y - d.len); ctx.stroke();
+    });
+    ctx.lineWidth = 1;
+    splashes = splashes.filter(sp => {
+      sp.t += dt; if (sp.t > .45) return false;
+      const k = sp.t / .45;
+      ctx.globalAlpha = .45 * (1 - k) * sp.z;
+      ctx.beginPath(); ctx.ellipse(sp.x, sp.y, 2 + k * 12 * sp.z, (2 + k * 12 * sp.z) * .3, 0, 0, 6.2832); ctx.stroke();
+      return true;
+    });
+    if (!nextFlash) nextFlash = now + 15000 + Math.random() * 25000;
+    if (now > nextFlash) { flash = 1; nextFlash = now + 20000 + Math.random() * 30000; }
+    if (flash > 0) {
+      const f = flash > .7 ? 1 : flash > .5 ? .3 : flash;   // двойная вспышка, потом затухание
+      ctx.globalAlpha = .1 * f; ctx.fillStyle = C.ink; ctx.fillRect(0, 0, W, H);
+      flash = Math.max(0, flash - dt * 1.6);
+    }
+  }
+  // документы: всплывают снизу, покачиваются и по пути получают подпись — галочку в кружке
+  function mkDoc(any) {
+    return { x: Math.random() * W, y: any ? Math.random() * H : H + 60, v: 10 + Math.random() * 16, dx: (Math.random() - .5) * 8,
+      r: (Math.random() - .5) * .5, vr: (Math.random() - .5) * .08, s: .6 + Math.random() * .7, sign: 1.5 + Math.random() * 12, t: 0 };
+  }
+  function drawDocs(dt) {
+    const w = 34, h = 44, f = 9;
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    docs.forEach(d => {
+      d.y -= d.v * d.s * dt * (1 + burst * 4); d.x += d.dx * dt; d.r += d.vr * dt; d.t += dt * (1 + burst * 8);
+      if (d.y < -80 || d.x < -80 || d.x > W + 80) Object.assign(d, mkDoc(false));
+      const k = Math.max(0, Math.min(1, (d.t - d.sign) / .8));
+      ctx.save(); ctx.translate(d.x + mx * 30 * d.s, d.y + my * 30 * d.s); ctx.rotate(d.r); ctx.scale(d.s, d.s);
+      ctx.globalAlpha = .3 + .35 * k; ctx.strokeStyle = k > 0 ? C.red : C.gray; ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(-w / 2, -h / 2); ctx.lineTo(w / 2 - f, -h / 2); ctx.lineTo(w / 2, -h / 2 + f); ctx.lineTo(w / 2, h / 2); ctx.lineTo(-w / 2, h / 2); ctx.closePath();
+      ctx.moveTo(w / 2 - f, -h / 2); ctx.lineTo(w / 2 - f, -h / 2 + f); ctx.lineTo(w / 2, -h / 2 + f);
+      for (let l = 0; l < 3; l++) { ctx.moveTo(-w / 2 + 6, -h / 2 + 15 + l * 7); ctx.lineTo(w / 2 - 7 - (l === 2 ? 9 : 0), -h / 2 + 15 + l * 7); }
+      ctx.stroke();
+      if (k > 0) {
+        ctx.globalAlpha = .9 * k; ctx.fillStyle = C.red; ctx.shadowColor = C.red; ctx.shadowBlur = 12 * k;
+        ctx.beginPath(); ctx.arc(w / 2 - 3, h / 2 - 3, 8, 0, 6.2832); ctx.fill(); ctx.shadowBlur = 0;
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(w / 2 - 7, h / 2 - 3); ctx.lineTo(w / 2 - 4, h / 2); ctx.lineTo(w / 2 + 1, h / 2 - 6); ctx.stroke();
+      }
+      ctx.restore();
+    });
+  }
+  function newSig(now) {
+    const x0 = W * (.08 + Math.random() * .55), y0 = H * (.15 + Math.random() * .7), w = 160 + Math.random() * 200;
+    const ctrl = []; let x = x0;
+    for (let i = 0; i < 10; i++) { ctrl.push([x, y0 + (Math.random() - .5) * 70]); x += w / 9 + (Math.random() - .5) * 18; }
+    ctrl.push([x0 + w * .3, y0 + 26]); ctrl.push([x0 + w * 1.05, y0 + 14]);
+    const pts = [];
+    for (let i = 0; i < ctrl.length - 1; i++) {
+      const p0 = ctrl[Math.max(0, i - 1)], p1 = ctrl[i], p2 = ctrl[i + 1], p3 = ctrl[Math.min(ctrl.length - 1, i + 2)];
+      for (let t = 0; t < 1; t += .06) {
+        const t2 = t * t, t3 = t2 * t;
+        pts.push([.5 * (2 * p1[0] + (-p0[0] + p2[0]) * t + (2 * p0[0] - 5 * p1[0] + 4 * p2[0] - p3[0]) * t2 + (-p0[0] + 3 * p1[0] - 3 * p2[0] + p3[0]) * t3),
+                  .5 * (2 * p1[1] + (-p0[1] + p2[1]) * t + (2 * p0[1] - 5 * p1[1] + 4 * p2[1] - p3[1]) * t2 + (-p0[1] + 3 * p1[1] - 3 * p2[1] + p3[1]) * t3)]);
+      }
+    }
+    return { pts, t0: now };
+  }
+  function neighbours(i) {
+    const a = nodes[i], out = [];
+    for (let j = 0; j < nodes.length; j++) if (j !== i) { const b = nodes[j], dx = a.x - b.x, dy = a.y - b.y; if (dx * dx + dy * dy < LINK * LINK) out.push(j); }
+    return out;
+  }
+  function spawnPacket() {
+    if (!nodes.length) return;
+    const i = Math.random() * nodes.length | 0, nb = neighbours(i);
+    if (nb.length) packets.push({ a: i, b: nb[Math.random() * nb.length | 0], t: 0, hops: 2 + (Math.random() * 4 | 0) });
+  }
+  function draw(now) {
+    const dt = Math.min(.05, (now - last) / 1000); last = now;
+    mx += (tx - mx) * .05; my += (ty - my) * .05;
+    ctx.clearRect(0, 0, W, H);
+    const ox = mx * 18, oy = my * 18;
+
+    if (scene === 'net') {
+      // узлы и связи
+      nodes.forEach(n => {
+        n.x += n.vx * dt; n.y += n.vy * dt;
+        if (n.x < -20) n.x = W + 20; if (n.x > W + 20) n.x = -20;
+        if (n.y < -20) n.y = H + 20; if (n.y > H + 20) n.y = -20;
+        const dx = n.x - px, dy = n.y - py, d2 = dx * dx + dy * dy;
+        if (d2 < 14000) { const f = (1 - d2 / 14000) * 40 * dt; n.x += dx * f / 60; n.y += dy * f / 60; }
+        n.hot = Math.max(0, n.hot - dt * 1.4);
+      });
+      ctx.lineWidth = 1; ctx.strokeStyle = C.gray;
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j], dx = a.x - b.x, dy = a.y - b.y, d2 = dx * dx + dy * dy;
+          if (d2 < LINK * LINK) { ctx.globalAlpha = (1 - Math.sqrt(d2) / LINK) * .28; ctx.beginPath(); ctx.moveTo(a.x + ox, a.y + oy); ctx.lineTo(b.x + ox, b.y + oy); ctx.stroke(); }
+        }
+      }
+      nodes.forEach(n => {
+        ctx.globalAlpha = .45 + n.hot * .55; ctx.fillStyle = n.hot > .05 ? C.red : C.gray;
+        ctx.beginPath(); ctx.arc(n.x + ox, n.y + oy, n.r + n.hot * 2.5, 0, 6.2832); ctx.fill();
+      });
+
+      // пакеты данных бегут по связям
+      if (now > nextPkt) { spawnPacket(); nextPkt = now + (burst > .2 ? 40 : 260 + Math.random() * 400); }
+      packets = packets.filter(p => {
+        const a = nodes[p.a], b = nodes[p.b]; if (!a || !b) return false;
+        p.t += dt * 1.6;
+        if (p.t >= 1) {
+          b.hot = 1; p.hops--;
+          if (p.hops <= 0) { ripples.push({ x: b.x, y: b.y, t: 0 }); return false; }
+          const nb = neighbours(p.b).filter(j => j !== p.a); if (!nb.length) return false;
+          p.a = p.b; p.b = nb[Math.random() * nb.length | 0]; p.t = 0; return true;
+        }
+        const x = a.x + (b.x - a.x) * p.t + ox, y = a.y + (b.y - a.y) * p.t + oy;
+        ctx.globalAlpha = .9; ctx.fillStyle = C.red; ctx.beginPath(); ctx.arc(x, y, 2.6, 0, 6.2832); ctx.fill();
+        ctx.globalAlpha = .25; ctx.strokeStyle = C.red; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(a.x + (b.x - a.x) * Math.max(0, p.t - .25) + ox, a.y + (b.y - a.y) * Math.max(0, p.t - .25) + oy); ctx.lineTo(x, y); ctx.stroke();
+        return true;
+      });
+      // круги от доставленных пакетов
+      ripples = ripples.filter(r => {
+        r.t += dt; if (r.t > 1.2) return false;
+        ctx.globalAlpha = .45 * (1 - r.t / 1.2); ctx.strokeStyle = C.red; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(r.x + ox, r.y + oy, 4 + r.t * 34, 0, 6.2832); ctx.stroke(); return true;
+      });
+
+      // росчерки подписи
+      if (now > nextSig && sigs.length < 2) { sigs.push(newSig(now)); nextSig = now + 4000 + Math.random() * 4000; }
+      sigs = sigs.filter(s => {
+        const age = (now - s.t0) / 1000, prog = Math.min(1, age / 2.2), fade = age > 3 ? Math.max(0, 1 - (age - 3) / 1.4) : 1;
+        if (fade <= 0) return false;
+        const n = Math.max(2, Math.floor(s.pts.length * prog));
+        ctx.strokeStyle = C.ink; ctx.globalAlpha = .3 * fade; ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        ctx.beginPath(); ctx.moveTo(s.pts[0][0], s.pts[0][1]);
+        for (let i = 1; i < n; i++) ctx.lineTo(s.pts[i][0], s.pts[i][1]);
+        ctx.stroke();
+        if (prog < 1) { const p = s.pts[n - 1]; ctx.globalAlpha = .85 * fade; ctx.fillStyle = C.red; ctx.beginPath(); ctx.arc(p[0], p[1], 3, 0, 6.2832); ctx.fill(); }
+        return true;
+      });
+    } else if (scene === 'rain') drawRain(dt, now);
+    else if (scene === 'docs') drawDocs(dt);
+
+    // символы base64
+    const boost = 1 + burst * 7; burst = Math.max(0, burst - dt * .9);
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    if (scene === 'net' || scene === 'glyphs') glyphs.forEach(p => {
+      p.y -= p.v * p.z * dt * boost; p.sw += dt * .8;
+      if (p.y < -20) Object.assign(p, mkGlyph(false));
+      if (Math.random() < .006) p.ch = CH[Math.random() * CH.length | 0];
+      ctx.fillStyle = burst > .15 && p.z > .7 ? C.red : C.gray;
+      ctx.globalAlpha = Math.min(.5, (.08 + .3 * p.z) * Math.min(1, p.y / H * 1.4) + burst * .3);
+      ctx.font = (p.sz * p.z + 6 | 0) + 'px "JetBrains Mono", monospace';
+      ctx.fillText(p.ch, p.x + Math.sin(p.sw) * 10 + mx * 12 * p.z, p.y);
+    });
+    ctx.globalAlpha = 1;
+  }
+  function loop(now) { draw(now); raf = requestAnimationFrame(loop); }
+  // «Облака» — Vanta.js на three.js; библиотеки грузятся, только когда выбран этот дизайн
+  const vantaEl = document.getElementById('vanta');
+  let vanta = null, vantaP = null;
+  const loadScript = src => new Promise((ok, fail) => { const sc = document.createElement('script'); sc.src = src; sc.onload = ok; sc.onerror = fail; document.head.append(sc); });
+  const DAY = { backgroundColor: 0xffffff, skyColor: 0x68b8d7, cloudColor: 0xadc1de, cloudShadowColor: 0x183550, sunColor: 0xff9919, sunGlareColor: 0xff6633, sunlightColor: 0xff9933 };
+  const NIGHT = { backgroundColor: 0x0b1624, skyColor: 0x0d2238, cloudColor: 0x34445e, cloudShadowColor: 0x050a14, sunColor: 0xffd27a, sunGlareColor: 0xff9966, sunlightColor: 0x8899bb };
+  async function syncClouds() {
+    if (scene !== 'clouds') { if (vanta) { vanta.destroy(); vanta = null; } vantaEl.hidden = true; return; }
+    vantaEl.hidden = false;
+    const opts = Object.assign({}, getComputedStyle(document.documentElement).colorScheme === 'dark' ? NIGHT : DAY, { speed: reduce.matches || paused || hold ? 0 : 1 });
+    try {
+      if (!window.VANTA || !window.VANTA.CLOUDS) await (vantaP = vantaP || loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js')
+        .then(() => loadScript('https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.clouds.min.js')));
+      if (scene !== 'clouds') return;
+      if (vanta) vanta.setOptions(opts);
+      else vanta = window.VANTA.CLOUDS(Object.assign({ el: vantaEl, THREE: window.THREE, mouseControls: true, touchControls: true, gyroControls: false, minHeight: 200, minWidth: 200 }, opts));
+    } catch (e) { vantaP = null; vantaEl.hidden = true; }
+  }
+  function start() { cancelAnimationFrame(raf); syncClouds(); if (reduce.matches || paused || hold || document.hidden || scene === 'clouds') { draw(performance.now()); return; } last = performance.now(); raf = requestAnimationFrame(loop); }
+  addEventListener('resize', resize);
+  addEventListener('pointermove', e => { tx = e.clientX / W - .5; ty = e.clientY / H - .5; px = e.clientX; py = e.clientY; }, { passive: true });
+  addEventListener('pointerleave', () => { px = py = -999; });
+  document.addEventListener('visibilitychange', start);
+  reduce.addEventListener && reduce.addEventListener('change', start);
+  const dm = matchMedia('(prefers-color-scheme: dark)');
+  dm.addEventListener && dm.addEventListener('change', () => { colors(); if (reduce.matches || paused) draw(performance.now()); if (vanta) { vanta.destroy(); vanta = null; } syncClouds(); });
+  colors(); resize(); start();
+  window.bgBurst = () => { burst = 1; for (let i = 0; i < 12; i++) spawnPacket(); };
+  window.bgScene = d => { scene = SCENES[d] || 'net'; colors(); start(); };
+  scene = SCENES[document.documentElement.dataset.design] || 'net';
+  window.bgHold = h => { hold = h; start(); };
+  window.bgPause = p => { paused = p; document.body.classList.toggle('still', p); start(); };
+})();
+/* ===== Интерфейс в стиле iOS ===== */
+const $ = id => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const svg = (inner, sw) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (sw || 3) + '" stroke-linecap="round" stroke-linejoin="round">' + inner + '</svg>';
+const ICON = {
+  ok: '<path d="M5 12.5l4.5 4.5L19 7.5"/>', warn: '<path d="M12 6v8"/><path d="M12 18h.01"/>',
+  err: '<path d="M7 7l10 10M17 7L7 17"/>', info: '<path d="M12 11v7"/><path d="M12 6.5h.01"/>',
+  doc: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/>'
+};
+const TONE = { ok: 'green', warn: 'orange', err: 'red', info: 'gray' };
+
+function money(v) { return Number(v).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+/* ----- строительные блоки iOS ----- */
+function secH(t) { return el('div', 'sec-h', t); }
+function group() { return el('div', 'group'); }
+function iconRow(tone, iconKey, text) {
+  const c = el('div', 'cell ico multi');
+  const sq = el('span', 'sq ' + TONE[tone] || tone); sq.className = 'sq ' + (TONE[tone] || tone); sq.innerHTML = svg(ICON[iconKey || tone]); sq.setAttribute('aria-hidden', 'true');
+  c.append(sq, el('span', 'lbl', text));
+  return c;
+}
+/* ----- уведомление в Dynamic Island ----- */
+function toast(msg) {
+  const t = $('toast'); $('toastText').textContent = msg; t.classList.add('wide');
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('wide'), 1800);
+}
+async function copyText(s) {
+  try { await navigator.clipboard.writeText(s); toast('Скопировано'); return; } catch (e) {}
+  const ta = document.createElement('textarea'); ta.value = s; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.append(ta); ta.select();
+  let ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+  ta.remove(); toast(ok ? 'Скопировано' : 'Не удалось скопировать');
+}
+
+function showError(msg, hint) {
+  const out = $('out'); out.textContent = '';
+  out.append(secH('Ошибка'));
+  const g = group(); g.setAttribute('role', 'alert'); g.append(iconRow('err', 'err', msg)); out.append(g);
+  if (hint) out.append(el('p', 'sec-f', hint));
+}
+
+// Очистить всё: результат справа возвращается к подсказке, поле кодов пустеет
+const emptyOut = $('out').innerHTML;
+function clearAll() {
+  $('mkSrc').value = ''; lastExcel = null;
+  const out = $('out'); out.innerHTML = emptyOut; out.scrollTop = 0;
+  toast('Очищено');
+}
+$('clear').onclick = clearAll;
+addEventListener('keydown', e => { if (e.key === 'Escape' && !$('clear').hidden && !/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) clearAll(); });
+new MutationObserver(() => { $('clear').hidden = !!$('out').querySelector(':scope > .empty'); }).observe($('out'), { childList: true });
+/* ===== Проверка Excel-шаблонов по инструкции Didox ===== */
+const REGIONS = ['3', '6', '8', '10', '12', '14', '18', '22', '24', '26', '27', '30', '33', '35', '50'];
+const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => String(a + i));
+const PACKS = ['KIZ', 'NomUpak', 'IdentTransUpak'];
+// Код маркировки — от 18 до 63 символов (без скрытого разделителя GS), в одной СФ — не больше 5000 кодов
+const MK_LEN = [18, 63], MK_PER_DOC = 5000;
+const mkLen = c => c.replace(//g, '').length;
+
+// Поля по номеру столбца шаблона (строка с номерами 1, 2, 3…).
+// lvl: doc — первая строка документа, cargo — первая строка груза, item — каждая позиция.
+// req: 1 — обязательно, 'w' — обычно обязательно (предупреждение). t — тип значения.
+const F = (n, lvl, req, t, e) => ({ n, lvl, req, t, e });
+const SPECS = {
+  sf: {
+    name: 'Счёт-фактура', max: 73, item: 41, dupNo: 4,
+    mark: [61, 62, 63], qty: 52, prec: 2,
+    f: {
+      2: F('ID типа СФ', 'doc', 1, 'enum', ['0', '2', '3']),
+      3: F('ID типа односторонней СФ', 'doc', 0, 'enum', range(1, 13)),
+      4: F('Номер СФ', 'doc', 1, 'text'), 5: F('Дата СФ', 'doc', 1, 'date'),
+      6: F('Номер договора', 'doc', 1, 'text'), 7: F('Дата договора', 'doc', 1, 'date'),
+      8: F('Номер доверенности', 'doc', 0, 'text'), 9: F('Дата доверенности', 'doc', 0, 'date'),
+      11: F('ИНН по доверенности', 'doc', 0, 'inn'), 12: F('Товар отпустил (ИНН/ПИНФЛ)', 'doc', 0, 'inn'),
+      14: F('ИНН исполнителя', 'doc', 1, 'inn'), 28: F('ИНН заказчика', 'doc', 1, 'inn'),
+      43: F('ИНН комитента', 'item', 0, 'inn'),
+      45: F('Наименование товара', 'item', 1, 'text'), 46: F('ИКПУ', 'item', 1, 'ikpu'),
+      47: F('Штрих-код', 'item', 0, 'digits'), 49: F('Код ед. измерения', 'item', 1, 'digits'),
+      50: F('Базовая цена (Фарм)', 'item', 0, 'num'), 51: F('Наценка (Фарм)', 'item', 0, 'num'),
+      52: F('Количество', 'item', 1, 'pos'), 53: F('Цена', 'item', 1, 'money'),
+      54: F('Ставка акциза', 'item', 0, 'num'), 55: F('Сумма акциза', 'item', 0, 'num'),
+      56: F('Стоимость поставки', 'item', 1, 'num'), 57: F('Ставка НДС', 'item', 1, 'vat'),
+      58: F('Сумма НДС', 'item', 1, 'num'), 59: F('Стоимость с НДС', 'item', 1, 'num'),
+      60: F('Код льготы', 'item', 0, 'digits'),
+      61: F('Тип товара (маркировка)', 'item', 0, 'enum', range(1, 7)),
+      62: F('Тип упаковки (маркировка)', 'item', 0, 'enum', PACKS),
+      63: F('Коды маркировок', 'item', 0, 'codes'),
+      64: F('ID склада', 'item', 0, 'digits'), 65: F('Происхождение товара', 'item', 1, 'enum', range(1, 4)),
+      68: F('Период СФ от', 'doc', 0, 'date'), 69: F('Период СФ до', 'doc', 0, 'date'),
+      73: F('Отпуск лекарств', 'item', 0, 'enum', ['1', '2'])
+    },
+    sums: { qty: 52, price: 53, excise: 55, cost: 56, rate: 57, vat: 58, total: 59 }
+  },
+  ttn: {
+    name: 'ТТН', max: 63, item: 50, cargo: 33, dupNo: 3, qty: 55, prec: 5,
+    f: {
+      2: F('ID типа перевозки', 'doc', 1, 'enum', ['1', '2', '3']),
+      3: F('Номер ТТН', 'doc', 1, 'text'), 4: F('Дата ТТН', 'doc', 1, 'date'),
+      5: F('Номер договора', 'doc', 1, 'text'), 6: F('Дата договора', 'doc', 1, 'date'),
+      7: F('ИНН/ПИНФЛ грузоотправителя', 'doc', 1, 'inn'), 8: F('Код филиала грузоотправителя', 'doc', 0, 'digits'),
+      9: F('ИНН/ПИНФЛ грузополучателя', 'doc', 1, 'inn'), 10: F('Код филиала грузополучателя', 'doc', 0, 'digits'),
+      11: F('ИНН/ПИНФЛ экспедитора', 'doc', 'w', 'inn'), 13: F('ИНН/ПИНФЛ грузоперевозчика', 'doc', 1, 'inn'),
+      15: F('ИНН/ПИНФЛ клиента', 'doc', 0, 'inn'), 19: F('ИНН/ПИНФЛ заказчика', 'doc', 0, 'inn'),
+      23: F('ID типа транспорта', 'doc', 1, 'enum', ['1']),
+      24: F('Номер автомобиля', 'doc', 1, 'text'), 25: F('Модель автомобиля', 'doc', 1, 'text'),
+      26: F('ИНН/ПИНФЛ владельца транспорта', 'doc', 0, 'inn'),
+      31: F('ПИНФЛ водителя', 'doc', 1, 'pinfl'), 32: F('ПИНФЛ ответственного лица', 'doc', 1, 'pinfl'),
+      34: F('Область погрузки', 'cargo', 1, 'enum', REGIONS), 35: F('Район погрузки', 'cargo', 1, 'digits'),
+      36: F('Улица, дом погрузки', 'cargo', 1, 'text'),
+      37: F('Широта погрузки', 'cargo', 0, 'coord'), 38: F('Долгота погрузки', 'cargo', 0, 'coord'),
+      39: F('ПИНФЛ ответственного грузоотправителя', 'cargo', 0, 'pinfl'),
+      40: F('Область доставки', 'cargo', 1, 'enum', REGIONS), 41: F('Район доставки', 'cargo', 1, 'digits'),
+      42: F('Улица, дом доставки', 'cargo', 1, 'text'),
+      43: F('Широта доставки', 'cargo', 0, 'coord'), 44: F('Долгота доставки', 'cargo', 0, 'coord'),
+      45: F('ПИНФЛ ответственного грузополучателя', 'cargo', 0, 'pinfl'),
+      51: F('ИНН/ПИНФЛ комитента', 'item', 0, 'inn'),
+      52: F('ИКПУ', 'item', 1, 'ikpu'), 53: F('Наименование товара', 'item', 1, 'text'),
+      54: F('Код ед. измерения', 'item', 1, 'digits'), 55: F('Количество', 'item', 1, 'pos'),
+      56: F('Цена', 'item', 1, 'money'), 57: F('Сумма без НДС', 'item', 1, 'num'),
+      58: F('Брутто', 'item', 0, 'num'), 59: F('Нетто', 'item', 0, 'num'),
+      60: F('Общее расстояние', 'doc', 1, 'num'), 61: F('Стоимость доставки за 1 км', 'doc', 1, 'num'), 62: F('Стоимость доставки (в сумах)', 'doc', 1, 'num'),
+      63: F('SKU ID (Uzum Market)', 'doc', 0, 'text'),
+      46: F('Номер доверенности', 'cargo', 0, 'text'), 47: F('Доверенность от', 'cargo', 0, 'date'), 48: F('Доверенность до', 'cargo', 0, 'date')
+    },
+    sums: { qty: 55, price: 56, cost: 57 }, weight: [58, 59]
+  },
+  hybrid: {
+    name: 'Гибридная ЭСФ', max: 70, item: 44, dupNo: 3,
+    mark: [62, 63, 64], qty: 53, prec: 5,
+    f: {
+      2: F('ID подтипа гибридной ЭСФ', 'doc', 1, 'enum', ['0', '1', '4']),
+      3: F('Номер СФ', 'doc', 1, 'text'), 4: F('Дата СФ', 'doc', 1, 'date'),
+      5: F('Номер договора', 'doc', 1, 'text'), 6: F('Дата договора', 'doc', 1, 'date'),
+      7: F('ИНН поставщика', 'doc', 1, 'inn'), 8: F('Код филиала поставщика', 'doc', 0, 'digits'),
+      9: F('ИНН покупателя', 'doc', 1, 'inn'), 10: F('Код филиала покупателя', 'doc', 0, 'digits'),
+      11: F('ИНН экспедитора', 'doc', 0, 'inn'), 13: F('ИНН грузоперевозчика', 'doc', 1, 'inn'),
+      15: F('ИНН клиента', 'doc', 0, 'inn'), 18: F('Дата договора с клиентом', 'doc', 0, 'date'),
+      19: F('ИНН заказчика', 'doc', 0, 'inn'), 22: F('Дата договора с заказчиком', 'doc', 0, 'date'),
+      23: F('ID типа транспорта', 'doc', 1, 'enum', ['1']),
+      24: F('Номер автомобиля', 'doc', 1, 'text'), 25: F('Модель автомобиля', 'doc', 1, 'text'),
+      26: F('ИНН/ПИНФЛ владельца транспорта', 'doc', 0, 'inn'),
+      31: F('ПИНФЛ водителя', 'doc', 1, 'pinfl'), 32: F('ПИНФЛ ответственного лица', 'doc', 1, 'pinfl'),
+      33: F('Область погрузки', 'doc', 1, 'enum', REGIONS), 34: F('Район погрузки', 'doc', 1, 'digits'), 35: F('Улица, дом погрузки', 'doc', 1, 'text'),
+      36: F('Область доставки', 'doc', 1, 'enum', REGIONS), 37: F('Район доставки', 'doc', 1, 'digits'), 38: F('Улица, дом доставки', 'doc', 1, 'text'),
+      39: F('Доверенное лицо, ПИНФЛ', 'doc', 0, 'pinfl'), 40: F('Номер доверенности', 'doc', 0, 'text'),
+      41: F('Доверенность от', 'doc', 0, 'date'), 42: F('Доверенность до', 'doc', 0, 'date'),
+      45: F('ИНН/ПИНФЛ комитента', 'item', 0, 'inn'),
+      46: F('ИКПУ', 'item', 1, 'ikpu'), 47: F('Наименование товара', 'item', 1, 'text'),
+      48: F('Штрих-код', 'item', 0, 'digits'), 50: F('Код ед. измерения', 'item', 1, 'digits'),
+      51: F('Базовая цена (Фарм)', 'item', 0, 'num'), 52: F('Наценка (Фарм)', 'item', 0, 'num'),
+      53: F('Количество', 'item', 1, 'pos'), 54: F('Цена', 'item', 1, 'money'),
+      55: F('Ставка акциза', 'item', 0, 'num'), 56: F('Сумма акциза', 'item', 0, 'num'),
+      57: F('Стоимость поставки', 'item', 1, 'num'), 58: F('Ставка НДС', 'item', 1, 'vat'),
+      59: F('Сумма НДС', 'item', 1, 'num'), 60: F('Стоимость с НДС', 'item', 1, 'num'),
+      61: F('Код льготы', 'item', 0, 'digits'),
+      62: F('Тип товара (маркировка)', 'item', 0, 'enum', range(1, 7)),
+      63: F('Тип упаковки (маркировка)', 'item', 0, 'enum', PACKS),
+      64: F('Коды маркировок', 'item', 0, 'codes'),
+      65: F('Происхождение товара', 'item', 0, 'enum', range(1, 4)),
+      66: F('Товар отпустил (ИНН/ПИНФЛ)', 'doc', 0, 'inn'),
+      67: F('Общее расстояние', 'doc', 1, 'num'), 68: F('Стоимость доставки (в сумах)', 'doc', 1, 'num'),
+      69: F('Брутто', 'item', 1, 'num'), 70: F('Нетто', 'item', 1, 'num')
+    },
+    sums: { qty: 53, price: 54, excise: 56, cost: 57, rate: 58, vat: 59, total: 60 }, weight: [69, 70]
+  },
+  free: {
+    name: 'Произвольный документ', max: 12, perRow: true,
+    f: {
+      1: F('Номер документа', 'doc', 1, 'text'), 2: F('Дата документа', 'doc', 1, 'date'),
+      3: F('Номер договора', 'doc', 0, 'text'), 4: F('Дата договора', 'doc', 0, 'date'),
+      5: F('Название документа', 'doc', 0, 'text'), 6: F('ID подтипа документа', 'doc', 1, 'subtype'),
+      9: F('ИНН/ПИНФЛ отправителя', 'doc', 1, 'inn'), 10: F('Код филиала отправителя', 'doc', 0, 'digits'),
+      11: F('ИНН/ПИНФЛ получателя', 'doc', 1, 'inn'), 12: F('Код филиала получателя', 'doc', 0, 'digits')
+    }
+  }
+};
+// Подтипы произвольного документа: в Didox их больше, чем в инструкции, и список пополняется
+const FREE_SUBTYPES = ['Акт сверки', 'Письмо', 'Договор', 'Счет на оплату', 'Акт выполненных работ', 'Другое', 'Заявка', 'Спецификация',
+  'Доп. соглашение', 'Акт приема-передачи', 'Акт о начислении штрафа', 'Перевод долга', 'Предоплата'];
+const STRICT = { inn: 1, pinfl: 1, ikpu: 1, digits: 1, enum: 1, subtype: 1 }; // ID, коды, ИНН — без пробелов
+
+let XLSX_P = null;
+function loadXLSX() {
+  if (window.XLSX) return Promise.resolve(window.XLSX);
+  if (!XLSX_P) XLSX_P = new Promise((ok, fail) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload = () => ok(window.XLSX); s.onerror = () => { XLSX_P = null; fail(new Error('Не удалось загрузить модуль чтения Excel. Проверьте интернет.')); };
+    document.head.append(s);
+  });
+  return XLSX_P;
+}
+
+// Файл разбирается в фоновом потоке (Web Worker), чтобы страница не замирала на больших шаблонах.
+// Если браузер не даёт запустить поток, разбираем как раньше — в основном.
+const READ_OPTS = { type: 'array', cellHTML: false, cellFormula: false };
+const WORKER_SRC = "importScripts('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');" +
+  "onmessage=function(e){try{postMessage({id:e.data.id,wb:XLSX.read(e.data.buf," + JSON.stringify(READ_OPTS) + ")})}catch(x){postMessage({id:e.data.id,err:String(x&&x.message||x)})}}";
+let xlsxWorker = null, workerSeq = 0;
+const workerJobs = new Map();
+async function readWorkbook(file) {
+  const X = await loadXLSX(), buf = await file.arrayBuffer(), local = () => X.read(buf, READ_OPTS);
+  if (xlsxWorker === null) {
+    try {
+      xlsxWorker = new Worker(URL.createObjectURL(new Blob([WORKER_SRC], { type: 'text/javascript' })));
+      xlsxWorker.onmessage = e => { const j = workerJobs.get(e.data.id); if (!j) return; workerJobs.delete(e.data.id); e.data.err ? j.fail(new Error(e.data.err)) : j.ok(e.data.wb); };
+      xlsxWorker.onerror = e => { e.preventDefault(); xlsxWorker.terminate(); xlsxWorker = false; workerJobs.forEach(j => j.retry()); workerJobs.clear(); };
+    } catch (e) { xlsxWorker = false; }
+  }
+  if (!xlsxWorker) { await new Promise(r => setTimeout(r, 30)); return { X, wb: local() }; }
+  const wb = await new Promise((ok, fail) => {
+    const id = ++workerSeq;
+    workerJobs.set(id, { ok, fail, retry: () => { try { ok(local()); } catch (e) { fail(e); } } });
+    xlsxWorker.postMessage({ id, buf });
+  });
+  return { X, wb };
+}
+
+// Шаблон часто «растянут» оформлением на тысячи пустых строк — берём диапазон по заполненным ячейкам
+function usedRange(X, ws) {
+  const ref = X.utils.decode_range(ws['!ref'] || 'A1'), e = { r: ref.s.r, c: ref.s.c };
+  for (const k in ws) {
+    if (k[0] === '!') continue;
+    const cell = ws[k]; if (!cell || cell.v == null || cell.v === '') continue;
+    const a = X.utils.decode_cell(k); if (a.r > e.r) e.r = a.r; if (a.c > e.c) e.c = a.c;
+  }
+  return { s: ref.s, e: { r: Math.min(ref.e.r, e.r), c: Math.min(ref.e.c, e.c) } };
+}
+
+// одна и та же ячейка читается проверками много раз — разбираем её один раз
+const cellCache = new WeakMap();
+function cellInfo(X, ws, r, c) {
+  let m = cellCache.get(ws); if (!m) cellCache.set(ws, m = new Map());
+  const k = r * 16384 + c;
+  if (m.has(k)) return m.get(k);
+  const v = readCell(X, ws, r, c); m.set(k, v); return v;
+}
+function readCell(X, ws, r, c) {
+  const cell = ws[X.utils.encode_cell({ r, c })];
+  if (!cell || cell.v == null || cell.v === '') return null;
+  const isDate = cell.t === 'd' || (cell.t === 'n' && cell.z && X.SSF.is_date(cell.z));
+  // у чисел берём само значение: отображение (cell.w) зависит от формата ячейки
+  const raw = cell.t === 'n' && !isDate ? String(cell.v) : cell.t === 's' ? String(cell.v) : (cell.w != null ? String(cell.w) : String(cell.v));
+  return { raw, s: raw.trim(), num: cell.t === 'n', isDate, v: cell.v };
+}
+function headerText(X, ws, r, c) {
+  for (let k = r - 1; k >= Math.max(0, r - 3); k--) { const i = cellInfo(X, ws, k, c); if (i && !/^\d+$/.test(i.s)) return i.s.replace(/\s+/g, ' '); }
+  return '';
+}
+function findNumberRow(X, ws, ref) {
+  for (let r = ref.s.r; r <= Math.min(ref.e.r, ref.s.r + 40); r++) {
+    const map = {}; let last = 0, n = 0, ok = true;
+    for (let c = ref.s.c; c <= ref.e.c; c++) {
+      const i = cellInfo(X, ws, r, c); if (!i) continue;
+      if (!/^\d{1,3}$/.test(i.s)) { ok = false; break; }
+      const v = +i.s; if (v <= last) { ok = false; break; }
+      map[v] = c; last = v; n++;
+    }
+    if (ok && n >= 8 && map[1] != null && map[2] != null) return { r, map, max: last };
+  }
+  return null;
+}
+function guessType(found, ws, X) {
+  const head = []; for (let r = 0; r < found.r; r++) for (const c of Object.values(found.map)) { const i = cellInfo(X, ws, r, c); if (i) head.push(i.s.toLowerCase()); }
+  const h = head.join(' | ');
+  if (found.max === 12 || /подтип документа|произвольн/.test(h) && found.max < 20) return 'free';
+  if (found.max === 73) return 'sf';
+  if (found.max === 63) return 'ttn';
+  if (found.max === 70 || found.max === 71) return 'hybrid';
+  if (/гибрид/.test(h)) return 'hybrid';
+  if (/перевоз|погрузк/.test(h)) return found.max > 64 ? 'hybrid' : 'ttn';
+  return found.max > 40 ? 'sf' : 'free';
+}
+
+const toNum = s => { const t = String(s).replace(/\s/g, '').replace(',', '.'); return /^-?\d+(\.\d+)?$/.test(t) ? +t : NaN; };
+const decimals = s => { const m = String(s).replace(',', '.').match(/\.(\d+)$/); return m ? m[1].length : 0; };
+function validDate(s) {
+  const m = s.match(/^(\d{2})\.(\d{2})\.(\d{4})$/); if (!m) return false;
+  const d = new Date(Date.UTC(+m[3], +m[2] - 1, +m[1]));
+  return d.getUTCDate() === +m[1] && d.getUTCMonth() === +m[2] - 1 && +m[3] > 1990 && +m[3] < 2100;
+}
+
+function checkValue(f, i, prec, add) {
+  const s = i.s;
+  if (STRICT[f.t] && i.raw !== s) add('err', 'Лишние пробелы в начале или конце — в ID, кодах и ИНН их быть не должно.');
+  if (STRICT[f.t] && /\s/.test(s) && f.t !== 'codes') add('err', 'Пробел внутри значения — в ID, кодах и ИНН его быть не должно.');
+  const clean = s.replace(/\s/g, '');
+  switch (f.t) {
+    case 'inn':
+      if (!/^\d+$/.test(clean)) add('err', 'ИНН/ПИНФЛ должен состоять только из цифр.');
+      else if (clean.length !== 9 && clean.length !== 14) add('err', 'Нужно 9 цифр (ИНН) или 14 цифр (ПИНФЛ), а здесь ' + clean.length + '.');
+      else if (i.num && clean.length === 14) add('warn', 'ПИНФЛ записан числом — сделайте ячейку текстовой, иначе Excel может исказить значение.');
+      break;
+    case 'pinfl':
+      if (!/^\d{14}$/.test(clean)) add('err', 'ПИНФЛ — ровно 14 цифр' + (/^\d+$/.test(clean) ? ', а здесь ' + clean.length + '.' : '.'));
+      break;
+    case 'ikpu':
+      if (!/^\d+$/.test(clean)) add('err', 'ИКПУ — только цифры, без названия.');
+      else if (clean.length !== 17) add('err', 'ИКПУ — 17 цифр, а здесь ' + clean.length + (i.num && clean.length === 16 ? '. Похоже, ячейка числовая и Excel убрал ведущий 0 — сделайте её текстовой.' : '.'));
+      break;
+    case 'digits':
+      if (!/^\d+$/.test(clean)) add('err', 'Должны быть только цифры.');
+      break;
+    case 'subtype':
+      if (!/^\d+$/.test(clean) || +clean < 1) add('err', 'ID подтипа — целое число от 1, например 1 (Акт сверки) или 6 (Другое).');
+      else if (+clean > FREE_SUBTYPES.length) add('warn', 'Подтип ' + clean + ' нам неизвестен — проверьте, что он есть в списке подтипов Didox.');
+      break;
+    case 'enum':
+      if (!f.e.some(x => x.toLowerCase() === clean.toLowerCase())) add('err', 'Недопустимое значение. Можно: ' + f.e.join(', ') + '.');
+      break;
+    case 'date':
+      if (i.isDate) add('err', 'Дата в формате даты Excel — нужен Текстовый формат ячейки (ДД.ММ.ГГГГ).');
+      else if (i.num && Number.isInteger(i.v) && i.v >= 36526 && i.v <= 73050) add('err', 'Дата записана числом Excel (' + i.v + ') — нужен текст ДД.ММ.ГГГГ.');
+      else if (!validDate(s)) add('err', 'Дата должна быть текстом ДД.ММ.ГГГГ, например 01.07.2025.');
+      break;
+    case 'pos': case 'num': case 'money': case 'coord': {
+      const n = toNum(s);
+      if (isNaN(n)) { add('err', 'Должно быть число.'); break; }
+      if (f.t !== 'coord' && n < 0) add('err', 'Не может быть отрицательным.');
+      if (f.t === 'pos' && n <= 0) add('err', 'Должно быть больше нуля.');
+      if (f.t === 'money' && decimals(s) > prec) add('err', 'После запятой не больше ' + prec + ' знаков — округлите.');
+      break;
+    }
+    case 'vat':
+      if (/%/.test(s)) add('err', 'Ставка без знака процента: 12, 0 или «Без НДС».');
+      else if (!/^(без ндс|ққссиз|0|12)$/i.test(s)) add('err', 'Ставка НДС: «Без НДС», 0 или 12.');
+      break;
+  }
+}
+
+// Безопасное исправление: вернёт [новое значение, что сделано] или null, если исправлять нечего или нельзя
+const pad2 = n => String(n).padStart(2, '0');
+function fixValue(X, f, i, prec) {
+  const s = i.s;
+  if (STRICT[f.t]) {
+    let v = i.raw.replace(/[\s ]/g, ''), why = [];
+    if (v !== i.raw) why.push('убраны пробелы');
+    if (f.t === 'ikpu' && i.num && /^\d{16}$/.test(v)) { v = '0' + v; why.push('возвращён ведущий 0'); }
+    if (f.t === 'enum') { const m = f.e.find(x => x.toLowerCase() === v.toLowerCase()); if (m && m !== v) { v = m; why.push('написание как в инструкции'); } }
+    if (i.num && /^\d+$/.test(v) && /^(inn|pinfl|ikpu)$/.test(f.t)) why.push('записано текстом');
+    return why.length ? [v, why.join(', ')] : null;
+  }
+  switch (f.t) {
+    case 'date': {
+      if (i.isDate) { const d = X.SSF.parse_date_code(i.v); if (d && d.y) return [pad2(d.d) + '.' + pad2(d.m) + '.' + d.y, 'дата Excel переведена в текст ДД.ММ.ГГГГ']; }
+      // дата без формата даты — Excel хранит её числом дней (46323 = 28.10.2026); берём только 2000–2099 годы
+      if (i.num && Number.isInteger(i.v) && i.v >= 36526 && i.v <= 73050) { const d = X.SSF.parse_date_code(i.v); if (d && d.y) return [pad2(d.d) + '.' + pad2(d.m) + '.' + d.y, 'дата записана числом Excel (' + i.v + ') — переведена в текст ДД.ММ.ГГГГ']; }
+      if (!validDate(s)) {
+        let m = s.match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{4})$/), c = null;
+        if (m) c = pad2(m[1]) + '.' + pad2(m[2]) + '.' + m[3];
+        else if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/))) c = pad2(m[3]) + '.' + pad2(m[2]) + '.' + m[1];
+        if (c && validDate(c)) return [c, 'дата приведена к ДД.ММ.ГГГГ'];
+      }
+      break;
+    }
+    case 'money': { const n = toNum(s), k = 10 ** prec; if (!isNaN(n) && decimals(s) > prec) return [String(Math.round((n + Number.EPSILON) * k) / k), 'цена округлена до ' + prec + ' знаков']; break; }
+    case 'vat':
+      if (/^\d+\s*%$/.test(s)) return [s.replace(/\s*%$/, ''), 'убран знак %'];
+      if (/^без\s*ндс$/i.test(s) && s !== 'Без НДС') return ['Без НДС', 'ставка записана как «Без НДС»'];
+      break;
+    case 'codes': {
+      const v = [...new Set(i.raw.split(/[\s,;]+/).filter(Boolean))].join(' ');
+      return v !== i.raw ? [v, 'коды через один пробел, без повторов в ячейке'] : null;
+    }
+  }
+  if (i.raw !== s) return [s, 'убраны пробелы в начале и конце'];
+  return null;
+}
+
+function validateSheet(X, ws, sheetName, opts) {
+  opts = opts || {};
+  const ref = usedRange(X, ws);
+  const found = findNumberRow(X, ws, ref);
+  if (!found) return null;
+  const type = guessType(found, ws, X), spec = SPECS[type];
+  const issues = [], codes = new Map(), docNos = new Map();
+  const col = n => found.map[n];
+  const letter = n => col(n) != null ? X.utils.encode_col(col(n)) : '?';
+  const titles = {};
+  const title = n => titles[n] != null ? titles[n] : (titles[n] = title0(n));
+  const title0 = n => { const h = col(n) != null ? headerText(X, ws, found.r, col(n)).replace(/\s*\*\s*/g, '').trim() : ''; return (spec.f[n] && spec.f[n].n) || h || 'Столбец ' + n; };
+  const starred = n => col(n) != null && /\*/.test(headerText(X, ws, found.r, col(n)));
+  const get = (r, n) => col(n) == null ? null : cellInfo(X, ws, r, col(n));
+  const addr = (r, n) => col(n) == null ? null : X.utils.encode_cell({ r, c: col(n) });
+  const push = (tone, r, n, msg, val) => issues.push({ tone, row: r + 1, n, addr: n ? addr(r, n) : null, where: n ? letter(n) + ' (' + n + ') · ' + title(n) : '', msg, val });
+  const fixes = new Map();
+  const fix = (r, n, i, val, why) => fixes.set(addr(r, n), { addr: addr(r, n), row: r + 1, where: letter(n) + ' (' + n + ') · ' + title(n), old: i.raw, val, why });
+  const cur = (r, n) => { const fx = fixes.get(addr(r, n)); if (fx) return fx.val; const i = get(r, n); return i ? i.s : ''; };
+
+  let docs = 0, items = 0, rows = 0, docIdx = 0, docStartRow = -1, pos = 0, cargo = 0, docSeq = [], docCodes = [];
+  let inherit = {};
+  const mapCols = Object.keys(found.map).map(Number), fieldNos = Object.keys(spec.f).map(Number);
+  const itemFields = fieldNos.filter(n => spec.f[n].lvl === 'item');
+  const groups = sameDocGroups(spec, found, ref, get, mapCols, fieldNos);
+  const joined = new Map();   // строка → первая строка группы, если группы объединяем
+  if (opts.merge) groups.forEach(g => g.rows.slice(1).forEach(r => joined.set(r, g.rows[0])));
+  for (let r = found.r + 1; r <= ref.e.r; r++) {
+    const filled = mapCols.some(n => get(r, n));
+    if (!filled) continue;
+    rows++;
+    let a = get(r, 1);
+    if (joined.has(r)) { fix(r, 1, a, null, 'п.п. убран: строка — товар той же СФ, что и строка ' + (joined.get(r) + 1)); a = null; }
+    let newDoc = spec.perRow || !!a;
+    if (!spec.perRow && !a && docStartRow < 0) { push('err', r, 1, 'Первая строка с данными без п.п. документа — укажите номер в столбце A.'); newDoc = true; }
+    if (newDoc) {
+      docs++; docStartRow = r; pos = 0; cargo = 0; docCodes.push({ r, n: 0 });
+      if (!spec.perRow && a) { docSeq.push({ r, v: a.s }); if (!/^\d+$/.test(a.s)) push('err', r, 1, 'П.п. документа — целое число.', a.raw); }
+    }
+    const newCargo = spec.cargo && (newDoc || !!get(r, spec.cargo));
+    if (spec.cargo && newCargo) {
+      const g = get(r, spec.cargo); cargo++;
+      if (!g) push('err', r, spec.cargo, 'Не указан п.п. груза в первой строке ТТН.');
+      else if (g.s !== String(cargo)) push('warn', r, spec.cargo, 'П.п. грузов идут по порядку 1, 2, 3… — ожидалось ' + cargo + '.', g.raw);
+    }
+    const ttnOnly = type === 'sf' && get(r, 71) && !itemFields.some(n => get(r, n));
+    const isItem = !spec.perRow && !ttnOnly && (newDoc || itemFields.some(n => get(r, n)) || !!get(r, spec.item));
+    if (isItem) {
+      items++; pos++;
+      const p = get(r, spec.item);
+      if (!p) push('err', r, spec.item, 'Не указан п.п. товара.');
+      else if (p.s !== String(pos) && opts.merge && groups.some(g => g.rows[0] === docStartRow)) fix(r, spec.item, p, String(pos), 'п.п. товара пронумерован по порядку внутри объединённой СФ');
+      else if (p.s !== String(pos)) push('err', r, spec.item, 'П.п. товаров внутри документа — 1, 2, 3… Ожидалось ' + pos + '.', p.raw);
+    }
+
+    // поля
+    for (const n of fieldNos) {
+      const f = spec.f[n];
+      if (col(n) == null) continue;
+      const atLevel = f.lvl === 'doc' ? newDoc : f.lvl === 'cargo' ? newCargo : isItem;
+      let i = get(r, n); const own = !!i;
+      if (spec.perRow && !i && [1, 2, 6].includes(n) && inherit[n]) i = inherit[n];
+      if (spec.perRow && i && [1, 2, 6].includes(n)) inherit[n] = i;
+      if (!i) {
+        if (!atLevel) continue;
+        let req = f.req || (starred(n) ? 1 : 0);
+        if (type === 'sf' && n === 28 && get(docStartRow, 3)) req = 0;              // односторонняя СФ
+        if (type === 'ttn' && (n === 5 || n === 6)) { const t = get(docStartRow, 2); if (t && t.s === '1') req = 0; }
+        if (req === 1) push('err', r, n, 'Обязательное поле не заполнено.');
+        else if (req === 'w') push('warn', r, n, 'Поле не заполнено — обычно оно нужно.');
+        continue;
+      }
+      // поля документа в строках товаров не проверяем, но очевидные исправления (дата, пробелы) делаем и там
+      if (atLevel || f.lvl === 'item') checkValue(f, i, spec.prec || 2, (tone, msg) => push(tone, r, n, msg, i.raw));
+      if (own) { const fv = fixValue(X, f, i, spec.prec || 2); if (fv) fix(r, n, i, fv[0], fv[1]); }
+    }
+
+    // условные правила
+    if (type === 'sf' && newDoc) {
+      const t = get(r, 2);
+      if (t && t.s === '2' && !get(r, 72)) push('warn', r, 72, 'Для типа «Возмещение расходов» обычно указывают ID входящей СФ.');
+    }
+    if (type === 'ttn' && newDoc) {
+      const t = get(r, 2);
+      if (t && t.s === '1' && (get(r, 5) || get(r, 6))) push('warn', r, 5, 'При типе «Со склада на склад» данные договора не заполняются.');
+      const g = get(r, 9);
+      if (g && g.s === '309376127' && !get(r, 63)) push('warn', r, 63, 'Грузополучатель — Uzum Market: заполните столбец 63.');
+    }
+    if (spec.dupNo && newDoc) { const d = get(r, spec.dupNo); if (d) { if (!docNos.has(d.s)) docNos.set(d.s, []); docNos.get(d.s).push(r + 1); } }
+
+    // суммы
+    if (isItem && spec.sums) {
+      const S = spec.sums, v = n => { const i = get(r, n); return i ? toNum(i.s) : NaN; };
+      const q = v(S.qty), pr = v(S.price), cost = v(S.cost), ex = S.excise ? v(S.excise) : NaN;
+      if (!isNaN(q) && !isNaN(pr) && !isNaN(cost)) {
+        const base = q * pr, withEx = base + (isNaN(ex) ? 0 : ex);
+        if (Math.abs(cost - base) > 0.05 && Math.abs(cost - withEx) > 0.05) {
+          // частый случай: цену округлили до копеек, а стоимость поставки — точная. Тогда точная цена = (стоимость − акциз) / количество
+          const prec = spec.prec || 2, k = 10 ** prec, exact = (cost - (isNaN(ex) ? 0 : ex)) / q, p2 = Math.round((exact + Number.EPSILON) * k) / k;
+          const priceI = get(r, S.price), rounded = q > 0 && Math.abs(pr - exact) <= 0.5 * 10 ** -decimals(priceI.s) + 1e-9;
+          const fits = Math.abs(p2 * q + (isNaN(ex) ? 0 : ex) - cost) <= 0.05;
+          let msg = 'Не сходится с «Количество × Цена»' + (isNaN(ex) ? '' : ' (+ акциз)') + ': ожидалось ' + money(isNaN(ex) ? base : withEx) + '.';
+          if (rounded && fits) { msg += ' Похоже, цена округлена: точная цена ' + p2 + '.'; fix(r, S.price, priceI, String(p2), 'цена уточнена: стоимость поставки / количество, до ' + prec + ' знаков'); }
+          else if (rounded) msg += ' Похоже, цена округлена, но с ' + prec + ' знаками после запятой точно не подобрать — проверьте количество или стоимость.';
+          push('warn', r, S.cost, msg, get(r, S.cost).raw);
+        }
+      }
+      if (S.rate) {
+        const rate = get(r, S.rate), vat = v(S.vat), tot = v(S.total);
+        if (rate && !isNaN(vat)) {
+          if (/^(без ндс|ққссиз|0)$/i.test(rate.s) && vat !== 0) push('err', r, S.vat, 'При ставке «' + rate.s + '» сумма НДС должна быть 0.', get(r, S.vat).raw);
+          if (rate.s === '12' && !isNaN(cost) && Math.abs(vat - cost * 0.12) > 1) push('warn', r, S.vat, 'НДС 12% от стоимости поставки — ожидалось около ' + money(cost * 0.12) + '.', get(r, S.vat).raw);
+        }
+        // исправления сумм — по уже исправленным значениям
+        const rateNow = cur(r, S.rate), vatI = get(r, S.vat), totI = get(r, S.total);
+        if (vatI && /^(без ндс|ққссиз|0)$/i.test(rateNow) && toNum(vatI.s) !== 0) fix(r, S.vat, vatI, '0', 'сумма НДС = 0 при ставке «' + rateNow + '»');
+        const c2 = toNum(cur(r, S.cost)), v2 = toNum(cur(r, S.vat));
+        if (totI && !isNaN(c2) && !isNaN(v2) && Math.abs(toNum(totI.s) - c2 - v2) > 0.05) fix(r, S.total, totI, String(+(c2 + v2).toFixed(2)), 'пересчитано: стоимость поставки + НДС');
+        if (!isNaN(cost) && !isNaN(vat) && !isNaN(tot) && Math.abs(tot - cost - vat) > 0.05) push('warn', r, S.total, 'Должно быть «Стоимость поставки + НДС» = ' + money(cost + vat) + '.', get(r, S.total).raw);
+      }
+    }
+    if (isItem && spec.weight) {
+      const b = get(r, spec.weight[0]), nt = get(r, spec.weight[1]);
+      if (b && nt && toNum(nt.s) > toNum(b.s)) push('warn', r, spec.weight[1], 'Нетто больше брутто.', nt.raw);
+    }
+
+    // маркировка
+    if (isItem && spec.mark) {
+      const [mt, mp, mc] = spec.mark, T = get(r, mt), P = get(r, mp), C = get(r, mc);
+      if (T || P || C) {
+        if (!T) push('err', r, mt, 'Заполнена маркировка, но не указан тип товара (1–7).');
+        if (!P) push('err', r, mp, 'Заполнена маркировка, но не указан тип упаковки (KIZ, NomUpak, IdentTransUpak).');
+        if (!C) push('err', r, mc, 'Указан тип маркировки, но нет кодов.');
+      }
+      if (C) {
+        const list = C.raw.split(/[\s,;]+/).filter(Boolean);
+        if (/[,;]/.test(C.raw)) push('err', r, mc, 'Коды маркировок разделяются пробелом, а не запятой или точкой с запятой.');
+        const seen = new Set();
+        list.forEach(code => {
+          if (seen.has(code)) push('err', r, mc, 'Код повторяется в этой же ячейке.', code); seen.add(code);
+          if (/[А-Яа-яЁёЎўҚқҒғҲҳ]/.test(code)) push('err', r, mc, 'В коде кириллица — похоже, код вводили не в той раскладке.', code);
+          else if (mkLen(code) < MK_LEN[0] || mkLen(code) > MK_LEN[1]) push('err', r, mc, 'Длина кода маркировки — от ' + MK_LEN[0] + ' до ' + MK_LEN[1] + ' символов, а здесь ' + mkLen(code) + '.', code);
+          if (!codes.has(code)) codes.set(code, []); codes.get(code).push(r + 1);
+        });
+        if (docCodes.length) docCodes[docCodes.length - 1].n += list.length;
+        const q = get(r, spec.qty);
+        if (P && P.s === 'KIZ' && q && !isNaN(toNum(q.s)) && toNum(q.s) !== list.length) push('warn', r, mc, 'Для KIZ число кодов обычно равно количеству: кодов ' + list.length + ', количество ' + q.s + '.');
+      }
+    }
+  }
+
+  if (spec.mark) docCodes.filter(d => d.n > MK_PER_DOC).forEach(d => push('err', d.r, spec.mark[2], 'В одном документе можно указать не больше ' + MK_PER_DOC + ' кодов маркировки, а здесь ' + d.n + '. Разделите товары на несколько документов.'));
+  // п.п. документов: все единицы или 1, 2, 3…
+  if (docSeq.length > 1) {
+    const allOne = docSeq.every(d => d.v === '1'), seq = docSeq.every((d, i) => d.v === String(i + 1));
+    if (!allOne && !seq) docSeq.forEach((d, i) => { if (d.v !== '1' && d.v !== String(i + 1)) push('warn', d.r, 1, 'П.п. документов: либо везде 1, либо 1, 2, 3… Здесь ожидалось ' + (i + 1) + '.', d.v); });
+  }
+  // дубли между разными строками; повтор внутри одной ячейки отмечен отдельно и исправляется сам
+  const dups = [...codes].filter(([, rs]) => new Set(rs).size > 1).map(([code, rs]) => ({ code, rows: [...new Set(rs)], n: new Set(rs).size }));
+  [...docNos].filter(([, rs]) => rs.length > 1).forEach(([no, rs]) => rs.slice(1).forEach(row => push('warn', row - 1, spec.dupNo, 'Этот номер документа уже есть в строке ' + rs[0] + '. Если это один документ с несколькими товарами, п.п. в столбце A ставится только в первой строке.', no)));
+  if (!rows) issues.push({ tone: 'warn', row: found.r + 2, where: '', msg: 'Под строкой с номерами столбцов нет данных.' });
+  issues.sort((x, y) => x.row - y.row || (x.n || 0) - (y.n || 0));
+  return { type, name: spec.name, sheet: sheetName, docs, items, rows, issues, dups, codes: codes.size, cols: found.max, fixes: [...fixes.values()], groups, merged: !!opts.merge };
+}
+
+// Подряд идущие строки с п.п. в столбце A, у которых совпадают номер документа и все заполненные поля документа
+// (даты, договор, ИНН сторон), — почти наверняка одна СФ с несколькими товарами: п.п. поставили в каждой строке.
+function sameDocGroups(spec, found, ref, get, mapCols, fieldNos) {
+  if (spec.perRow || !spec.dupNo) return [];
+  const docF = fieldNos.filter(n => spec.f[n].lvl === 'doc' && n !== 1);
+  const groups = []; let g = null;
+  for (let r = found.r + 1; r <= ref.e.r; r++) {
+    if (!mapCols.some(n => get(r, n))) continue;
+    if (!get(r, 1)) continue;                       // строка товара внутри уже начатого документа
+    const no = get(r, spec.dupNo);
+    const same = g && no && no.s === g.no && docF.every(n => { const x = get(r, n), y = get(g.rows[0], n); return !x || !y || x.s === y.s; });
+    if (same) g.rows.push(r);
+    else { if (g && g.rows.length > 1) groups.push(g); g = no ? { no: no.s, rows: [r] } : null; }
+  }
+  if (g && g.rows.length > 1) groups.push(g);
+  return groups;
+}
+
+// Шаблон для загрузки ИКПУ: A — ИКПУ код, B — тип происхождения товара, без строки с номерами столбцов
+function validateIkpu(X, ws, sheetName) {
+  const ref = usedRange(X, ws);
+  let hr = -1;
+  for (let r = ref.s.r; r <= Math.min(ref.e.r, ref.s.r + 10) && hr < 0; r++) { const a = cellInfo(X, ws, r, 0); if (a && /икпу/i.test(a.s)) hr = r; }
+  if (hr < 0) return null;
+  const fA = F('ИКПУ код', 'item', 1, 'ikpu'), fB = F('Тип происхождения товара', 'item', 1, 'enum', range(1, 4));
+  const issues = [], seen = new Map(), fixes = []; let rows = 0;
+  const push = (tone, r, c, f, msg, val) => issues.push({ tone, row: r + 1, n: c + 1, addr: X.utils.encode_cell({ r, c }), where: X.utils.encode_col(c) + ' · ' + f.n, msg, val });
+  for (let r = hr + 1; r <= ref.e.r; r++) {
+    const a = cellInfo(X, ws, r, 0), b = cellInfo(X, ws, r, 1);
+    if (!a && !b) continue;
+    rows++;
+    [[a, 0, fA], [b, 1, fB]].forEach(([i, c, f]) => {
+      if (!i) push('err', r, c, f, 'Обязательное поле не заполнено.');
+      else {
+        checkValue(f, i, 2, (tone, msg) => push(tone, r, c, f, msg, i.raw));
+        const fv = fixValue(X, f, i, 2);
+        if (fv) fixes.push({ addr: X.utils.encode_cell({ r, c }), row: r + 1, where: X.utils.encode_col(c) + ' · ' + f.n, old: i.raw, val: fv[0], why: fv[1] });
+      }
+    });
+    if (a) { const k = a.s.replace(/\s/g, ''); if (seen.has(k)) push('warn', r, 0, fA, 'Этот ИКПУ уже есть в строке ' + seen.get(k) + '.', a.raw); else seen.set(k, r + 1); }
+  }
+  if (!rows) issues.push({ tone: 'warn', row: hr + 2, where: '', msg: 'Под заголовком нет данных.' });
+  return { type: 'ikpu', name: 'Шаблон загрузки ИКПУ', sheet: sheetName, docs: rows, items: rows, rows, issues, dups: [], codes: 0, fixes };
+}
+
+async function checkExcel(file) {
+  const out = $('out'); out.textContent = ''; out.scrollTop = 0;
+  out.append(secH('Проверка Excel')); const g = group(); g.append(iconRow('info', 'info', 'Читаем ' + file.name + '…')); out.append(g);
+  let X, wb, results;
+  window.bgHold(true);
+  try {
+    try { ({ X, wb } = await readWorkbook(file)); }
+    catch (e) { showError('Не удалось открыть файл: ' + e.message, 'Нужен файл .xlsx шаблона Didox.'); return; }
+    results = wb.SheetNames.map(n => validateSheet(X, wb.Sheets[n], n) || validateIkpu(X, wb.Sheets[n], n)).filter(Boolean);
+  } finally { window.bgHold(false); }
+  if (!results.length) { showError('Не нашли шаблон в файле.', 'Ожидается строка с номерами столбцов 1, 2, 3… над данными, как в шаблонах Didox.'); return; }
+  lastExcel = { file, results, X, wb };
+  renderExcel(file.name, results);
+}
+// перепроверка того же файла: объединить похожие строки в одну СФ или вернуть как было
+function recheckExcel(merge) {
+  const { X, wb, file } = lastExcel;
+  const results = wb.SheetNames.map(n => validateSheet(X, wb.Sheets[n], n, { merge }) || validateIkpu(X, wb.Sheets[n], n)).filter(Boolean);
+  lastExcel = { file, results, X, wb };
+  renderExcel(file.name, results);
+  toast(merge ? 'Строки объединены в одну СФ' : 'Объединение отменено');
+}
+
+/* ----- исправленная копия: правим ячейки прямо в XML, чтобы сохранить оформление шаблона ----- */
+let lastExcel = null, JSZIP_P = null;
+function loadJSZip() {
+  if (window.JSZip) return Promise.resolve(window.JSZip);
+  if (!JSZIP_P) JSZIP_P = new Promise((ok, fail) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    s.onload = () => ok(window.JSZip); s.onerror = () => { JSZIP_P = null; fail(new Error('Не удалось загрузить модуль записи Excel. Проверьте интернет.')); };
+    document.head.append(s);
+  });
+  return JSZIP_P;
+}
+const NS = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
+const RNS = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+const PNS = 'http://schemas.openxmlformats.org/package/2006/relationships';
+const CNS = 'http://schemas.openxmlformats.org/package/2006/content-types';
+const XMLNS = 'http://www.w3.org/XML/1998/namespace';
+const xesc = v => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+async function buildFixed(file, results) {
+  const JSZip = await loadJSZip();
+  const zip = await JSZip.loadAsync(await file.arrayBuffer());
+  const P = new DOMParser(), S = new XMLSerializer();
+  const read = async path => P.parseFromString(await zip.file(path).async('string'), 'application/xml');
+  const write = (path, doc) => zip.file(path, S.serializeToString(doc));
+  const wb = await read('xl/workbook.xml'), rels = await read('xl/_rels/workbook.xml.rels'), ct = await read('[Content_Types].xml');
+  const relEls = [...rels.getElementsByTagNameNS(PNS, 'Relationship')];
+  const target = {}; relEls.forEach(r => target[r.getAttribute('Id')] = r.getAttribute('Target'));
+  const sheetEls = [...wb.getElementsByTagNameNS(NS, 'sheet')], sheetPath = {};
+  sheetEls.forEach(sh => { const t = target[sh.getAttributeNS(RNS, 'id')]; if (t) sheetPath[sh.getAttribute('name')] = t.startsWith('/') ? t.slice(1) : 'xl/' + t; });
+
+  // подсветка: копия стиля ячейки + светло-зелёная заливка + текстовый формат (@)
+  let styleFor = sIdx => sIdx, st = null;
+  if (zip.file('xl/styles.xml')) {
+    st = await read('xl/styles.xml');
+    const fills = st.getElementsByTagNameNS(NS, 'fills')[0], xfs = st.getElementsByTagNameNS(NS, 'cellXfs')[0];
+    if (fills && xfs) {
+      const fill = st.createElementNS(NS, 'fill'), pf = st.createElementNS(NS, 'patternFill'), fg = st.createElementNS(NS, 'fgColor'), bg = st.createElementNS(NS, 'bgColor');
+      pf.setAttribute('patternType', 'solid'); fg.setAttribute('rgb', 'FFC6EFCE'); bg.setAttribute('indexed', '64');
+      pf.append(fg, bg); fill.append(pf); fills.append(fill);
+      const fillId = fills.getElementsByTagNameNS(NS, 'fill').length - 1; fills.setAttribute('count', fillId + 1);
+      const list = () => [...xfs.getElementsByTagNameNS(NS, 'xf')].filter(x => x.parentNode === xfs);
+      const memo = {};
+      styleFor = sIdx => {
+        if (memo[sIdx] != null) return memo[sIdx];
+        const x = (list()[sIdx] || list()[0]).cloneNode(true);
+        x.setAttribute('fillId', fillId); x.setAttribute('applyFill', '1'); x.setAttribute('numFmtId', '49'); x.setAttribute('applyNumberFormat', '1');
+        xfs.append(x); const id = list().length - 1; xfs.setAttribute('count', id + 1);
+        return (memo[sIdx] = id);
+      };
+    }
+  }
+
+  const log = [];
+  for (const res of results) {
+    const path = sheetPath[res.sheet];
+    if (!res.fixes.length || !path || !zip.file(path)) continue;
+    const doc = await read(path), cells = {};
+    [...doc.getElementsByTagNameNS(NS, 'c')].forEach(c => cells[c.getAttribute('r')] = c);
+    res.fixes.forEach(fx => {
+      const c = cells[fx.addr]; if (!c) return;
+      const sIdx = +(c.getAttribute('s') || 0);
+      while (c.firstChild) c.removeChild(c.firstChild);
+      c.setAttribute('s', styleFor(sIdx));
+      if (fx.val == null) c.removeAttribute('t');
+      else {
+        c.setAttribute('t', 'inlineStr');
+        const is = doc.createElementNS(NS, 'is'), t = doc.createElementNS(NS, 't');
+        t.setAttributeNS(XMLNS, 'xml:space', 'preserve'); t.textContent = fx.val; is.append(t); c.append(is);
+      }
+      log.push([res.sheet, fx.row, fx.where, fx.old, fx.val == null ? '(пусто)' : fx.val, fx.why]);
+    });
+    write(path, doc);
+  }
+  if (st) write('xl/styles.xml', st);
+
+  // calcChain ссылается на старые формулы — Excel пересоберёт его сам
+  if (zip.file('xl/calcChain.xml')) {
+    zip.remove('xl/calcChain.xml');
+    relEls.filter(r => /calcChain/.test(r.getAttribute('Target'))).forEach(r => r.parentNode.removeChild(r));
+    [...ct.getElementsByTagNameNS(CNS, 'Override')].filter(o => /calcChain/.test(o.getAttribute('PartName'))).forEach(o => o.parentNode.removeChild(o));
+  }
+
+  // лист «Исправления» с журналом
+  const names = sheetEls.map(sh => sh.getAttribute('name'));
+  let name = 'Исправления', k = 2; while (names.includes(name)) name = 'Исправления ' + k++;
+  const rows = [['Лист', 'Строка', 'Столбец · поле', 'Было', 'Стало', 'Что сделано'], ...log];
+  const cellX = (ref, v) => '<c r="' + ref + '" t="inlineStr"><is><t xml:space="preserve">' + xesc(v) + '</t></is></c>';
+  const xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="' + NS + '"><cols>' +
+    [14, 8, 42, 32, 32, 46].map((w, i) => '<col min="' + (i + 1) + '" max="' + (i + 1) + '" width="' + w + '" customWidth="1"/>').join('') +
+    '</cols><sheetData>' + rows.map((r, ri) => '<row r="' + (ri + 1) + '">' + r.map((v, ci) => cellX(String.fromCharCode(65 + ci) + (ri + 1), v)).join('') + '</row>').join('') +
+    '</sheetData></worksheet>';
+  let part = 'xl/worksheets/fixlog.xml', n = 2; while (zip.file(part)) part = 'xl/worksheets/fixlog' + n++ + '.xml';
+  zip.file(part, xml);
+  const rid = 'rIdFixLog' + Date.now();
+  const rel = rels.createElementNS(PNS, 'Relationship');
+  rel.setAttribute('Id', rid); rel.setAttribute('Type', RNS + '/worksheet'); rel.setAttribute('Target', part.replace('xl/', ''));
+  rels.documentElement.append(rel);
+  const sh = wb.createElementNS(NS, 'sheet');
+  sh.setAttribute('name', name); sh.setAttribute('sheetId', Math.max(0, ...sheetEls.map(x => +x.getAttribute('sheetId') || 0)) + 1); sh.setAttributeNS(RNS, 'r:id', rid);
+  wb.getElementsByTagNameNS(NS, 'sheets')[0].append(sh);
+  const ov = ct.createElementNS(CNS, 'Override');
+  ov.setAttribute('PartName', '/' + part); ov.setAttribute('ContentType', 'application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml');
+  ct.documentElement.append(ov);
+  write('xl/workbook.xml', wb); write('xl/_rels/workbook.xml.rels', rels); write('[Content_Types].xml', ct);
+  return zip.generateAsync({ type: 'blob', mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', compression: 'DEFLATE' });
+}
+
+async function saveFile(name, blob) {
+  // внутри claude.ai файл отдаётся через возможность downloads, в обычном браузере — ссылкой
+  try {
+    const d = window.claude && window.claude.use ? await window.claude.use('downloads') : null;
+    if (d) { await d.save({ filename: name, data: blob }); return true; }
+  } catch (e) { if (e && e.code === 'declined') return false; }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  return true;
+}
+
+async function downloadFixed(btn) {
+  if (!lastExcel) return;
+  btn.classList.add('busy'); btn.disabled = true;
+  try {
+    const blob = await buildFixed(lastExcel.file, lastExcel.results);
+    const name = lastExcel.file.name.replace(/\.xlsx$/i, '') + ' (исправлено).xlsx';
+    if (await saveFile(name, blob)) toast('Исправленный шаблон готов');
+  } catch (e) { toast('Не удалось собрать файл'); console.error(e); }
+  btn.classList.remove('busy'); btn.disabled = false;
+}
+
+function issueRow(tone, where, msg, val, fx) {
+  const c = el('div', 'cell ico multi iss');
+  const sq = el('span', 'sq ' + TONE[tone]); sq.innerHTML = svg(ICON[tone]); sq.setAttribute('aria-hidden', 'true');
+  const lbl = el('span', 'lbl');
+  if (where) lbl.append(el('span', 'w', where));
+  lbl.append(document.createTextNode(msg));
+  if (val != null && val !== '') lbl.append(el('span', 'v', 'Значение: «' + (String(val).length > 120 ? String(val).slice(0, 120) + '…' : val) + '»'));
+  if (fx) lbl.append(el('span', 'v fixed', fx.val == null ? 'Исправится → ячейка станет пустой' : 'Исправится → «' + (fx.val.length > 120 ? fx.val.slice(0, 120) + '…' : fx.val) + '»'));
+  c.append(sq, lbl); return c;
+}
+
+function renderExcel(fname, results) {
+  const out = $('out'); out.textContent = ''; out.scrollTop = 0;
+  const LIMIT = 300; let report = ['Проверка: ' + fname];
+  results.forEach(res => {
+    const errs = res.issues.filter(i => i.tone === 'err'), warns = res.issues.filter(i => i.tone === 'warn');
+    const fxMap = new Map(res.fixes.map(f => [f.addr, f]));
+    const box = el('div', 'hero appear');
+    const head = el('div', 'kind'); const badge = el('span', 'badge'); badge.innerHTML = svg('<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M10 4v16"/>', 2);
+    head.append(badge, el('b', null, res.name)); box.append(head);
+    const dl = el('dl');
+    (res.type === 'ikpu'
+      ? [['Лист', res.sheet], ['Строк', res.rows], ['Ошибок', errs.length], ['Предупреждений', warns.length]]
+      : [['Лист', res.sheet], ['Документов', res.docs], ['Позиций', res.items], ['Ошибок', errs.length + res.dups.length], ['Предупреждений', warns.length], ['Кодов маркировки', res.codes]]).concat([['Исправится сам', res.fixes.length]])
+      .forEach(([t, v]) => { const d = el('div'); d.append(el('dt', null, t), el('dd', null, String(v))); dl.append(d); });
+    box.append(dl); out.append(box);
+    if (res.groups && res.groups.length) {
+      const n = res.groups.reduce((k, g) => k + g.rows.length, 0), g0 = res.groups[0];
+      const span = g => 'строки ' + (g.rows[0] + 1) + '–' + (g.rows[g.rows.length - 1] + 1);
+      out.append(secH(res.merged ? 'Строки объединены' : 'Похоже на одну СФ'));
+      const g = group();
+      g.append(iconRow(res.merged ? 'ok' : 'warn', res.merged ? 'ok' : 'warn', res.merged
+        ? 'В исправленном файле ' + (res.groups.length > 1 ? res.groups.length + ' групп строк станут отдельными СФ' : span(g0) + ' — одна СФ № ' + g0.no + ' с ' + g0.rows.length + ' товарами') + ': п.п. в столбце A останется только в первой строке, товары пронумерованы 1, 2, 3…'
+        : (res.groups.length > 1 ? 'Найдено ' + res.groups.length + ' групп строк' : span(g0) + ' (' + g0.rows.length + ' шт.)') + ' с одинаковым номером СФ, датами, договором и ИНН, но п.п. в столбце A стоит в каждой строке. Так загрузится ' + n + ' отдельных СФ. Если это одна СФ с несколькими товарами, п.п. ставится только в первой строке.'));
+      out.append(g);
+      const mb = el('button', 'btn-fill', res.merged ? 'Отменить объединение' : 'Объединить в одну СФ');
+      mb.onclick = () => recheckExcel(!res.merged); out.append(mb);
+      if (!res.merged) out.append(el('p', 'sec-f', 'Если это действительно разные СФ — дайте им разные номера в столбце D.'));
+    }
+    report.push('', res.name + ' (лист ' + res.sheet + '): документов ' + res.docs + ', позиций ' + res.items + ', ошибок ' + (errs.length + res.dups.length) + ', предупреждений ' + warns.length);
+
+    if (!errs.length && !warns.length && !res.dups.length) {
+      const g = group(); g.style.marginTop = '16px'; g.append(iconRow('ok', 'ok', 'Ошибок не найдено. Шаблон заполнен по инструкции.')); out.append(g);
+    }
+    if (res.dups.length) {
+      out.append(secH('Дубли кодов маркировки (' + res.dups.length + ')'));
+      const g = group(); res.dups.slice(0, LIMIT).forEach(d => g.append(issueRow('err', 'Строки ' + d.rows.join(', '), 'Код встречается ' + d.n + ' раза — каждый код маркировки должен быть уникальным.', d.code)));
+      if (res.dups.length > LIMIT) g.append(el('div', 'more', 'и ещё ' + (res.dups.length - LIMIT)));
+      out.append(g);
+      report.push('', 'Дубли маркировки:'); res.dups.forEach(d => report.push('- ' + d.code + ' — строки ' + d.rows.join(', ')));
+    }
+    [['err', 'Ошибки', errs], ['warn', 'Предупреждения', warns]].forEach(([tone, t, list]) => {
+      if (!list.length) return;
+      out.append(secH(t + ' (' + list.length + ')'));
+      const g = group(); list.slice(0, LIMIT).forEach(i => g.append(issueRow(tone, 'Строка ' + i.row + (i.where ? ' · ' + i.where : ''), i.msg, i.val, i.addr && fxMap.get(i.addr))));
+      if (list.length > LIMIT) g.append(el('div', 'more', 'и ещё ' + (list.length - LIMIT) + ' — скопируйте отчёт целиком'));
+      out.append(g);
+      report.push('', t + ':'); list.forEach(i => report.push('- Строка ' + i.row + (i.where ? ', ' + i.where : '') + ': ' + i.msg + (i.val != null && i.val !== '' ? ' [' + i.val + ']' : '')));
+    });
+  });
+  const totalFixes = results.reduce((a, r) => a + r.fixes.length, 0);
+  if (totalFixes) {
+    out.append(secH('Будет исправлено автоматически (' + totalFixes + ')'));
+    const g = group();
+    results.forEach(res => res.fixes.slice(0, LIMIT).forEach(f => g.append(issueRow('ok', 'Строка ' + f.row + ' · ' + f.where, f.why[0].toUpperCase() + f.why.slice(1) + '.', f.old, f))));
+    if (totalFixes > LIMIT) g.append(el('div', 'more', 'и ещё — полный список будет на листе «Исправления»'));
+    out.append(g);
+    if (/\.xlsx$/i.test(fname)) {
+      const btn = el('button', 'btn-fill accent', 'Скачать исправленный шаблон'); btn.onclick = () => downloadFixed(btn);
+      out.insertBefore(btn, out.children[1] || null);
+      out.append(el('p', 'sec-f', 'В скачанной копии исправленные ячейки подсвечены зелёным, а на листе «Исправления» — что было и что стало. Оформление шаблона сохраняется, исходный файл не меняется. Остальные ошибки нужно исправить вручную.'));
+    } else out.append(el('p', 'sec-f', 'Исправленную копию можно собрать только из файла .xlsx — пересохраните шаблон в этом формате.'));
+    report.push('', 'Исправится автоматически: ' + totalFixes);
+  } else if (results.some(r => r.issues.length || r.dups.length)) {
+    // объясняем, почему нет кнопки скачивания, — иначе её ищут
+    const g = group(); g.style.marginTop = '16px';
+    g.append(iconRow('info', 'info', 'Кнопки «Скачать исправленный шаблон» нет: среди найденных ошибок нет таких, которые можно исправить автоматически без догадок. Их нужно поправить в файле вручную.'));
+    out.insertBefore(g, out.children[1] || null);
+  }
+  const bar = el('div', 'jbar'); const b = el('button', 'link', 'Копировать отчёт'); b.onclick = () => copyText(report.join('\n')); bar.append(b);
+  out.append(bar);
+  out.append(el('p', 'sec-f', 'Проверяется заполнение по инструкции. Совпадение ИКПУ с единицей измерения, существование ИНН и ID районов проверяются только при загрузке в Didox.'));
+  if (window.bgBurst) window.bgBurst();
+  const total = results.reduce((a, r) => a + r.issues.filter(i => i.tone === 'err').length + r.dups.length, 0);
+  toast(total ? 'Найдено ошибок: ' + total : 'Ошибок не найдено');
+  if (!matchMedia('(min-width:1000px)').matches) out.firstElementChild.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+$('xls').addEventListener('change', e => { if (e.target.files[0]) checkExcel(e.target.files[0]); e.target.value = ''; });
+const xz = $('xlsZone');
+['dragenter', 'dragover'].forEach(t => xz.addEventListener(t, e => { e.preventDefault(); xz.classList.add('drop-over'); }));
+['dragleave', 'drop'].forEach(t => xz.addEventListener(t, e => { e.preventDefault(); xz.classList.remove('drop-over'); }));
+xz.addEventListener('drop', e => { const f = e.dataTransfer.files && e.dataTransfer.files[0]; if (f) checkExcel(f); });
+
+/* ===== Поиск дублей маркировки в списке кодов или Excel ===== */
+// Коды разделяются только пробелами и переводами строк: запятая, «;» и кавычки допустимы внутри кода GS1.
+// Символ-разделитель GS (\x1d) при сравнении не учитывается — один и тот же код могут сканировать с ним и без.
+const MK_MIN = 18;            // в Excel кодом считаем строку от 18 печатных символов: ИКПУ (17), ИНН и ПИНФЛ так не попадут
+const mkKey = c => c.replace(/\x1d/g, '');
+const mkLooksLikeCode = t => t.length >= MK_MIN && /^[\x1d\x21-\x7e]+$/.test(t);
+
+function mkFromText(text) {
+  const items = [];
+  text.split(/\r?\n/).forEach((line, li) => line.split(/\s+/).forEach(t => {
+    t = t.replace(/^["']+|["']+$/g, '');
+    if (t) items.push({ code: t, where: 'строка ' + (li + 1) });
+  }));
+  return { items, source: 'список' };
+}
+function mkFromSheets(X, wb) {
+  const items = [], cols = new Set();
+  wb.SheetNames.forEach(name => {
+    const ws = wb.Sheets[name], pre = wb.SheetNames.length > 1 ? name + '!' : '';
+    for (const addr in ws) {
+      if (addr[0] === '!') continue;
+      const cell = ws[addr]; if (!cell || cell.v == null) continue;
+      String(cell.v).split(/\s+/).forEach(t => {
+        if (!mkLooksLikeCode(t)) return;
+        items.push({ code: t, where: pre + addr });
+        cols.add(pre + addr.replace(/\d+$/, ''));
+      });
+    }
+  });
+  return { items, source: 'Excel', cols: [...cols] };
+}
+
+function mkAnalyze(items) {
+  const map = new Map();
+  items.forEach(it => { const k = mkKey(it.code); if (!map.has(k)) map.set(k, []); map.get(k).push(it); });
+  const dups = [...map].filter(([, l]) => l.length > 1).map(([k, l]) => ({ code: l[0].code, n: l.length, where: l.map(x => x.where), gs: new Set(l.map(x => x.code)).size > 1 }))
+    .sort((a, b) => b.n - a.n);
+  // один код с криптохвостом и без: короткий — начало длинного
+  const keys = [...map.keys()].sort(), similar = [];
+  for (let i = 0; i + 1 < keys.length; i++) {
+    const a = keys[i], b = keys[i + 1];
+    if (a.length >= 20 && b.startsWith(a)) similar.push({ short: a, long: b, where: map.get(a)[0].where + ' и ' + map.get(b)[0].where });
+  }
+  const unique = [...map.values()].map(l => l[0].code);
+  const badLen = items.filter(it => mkLen(it.code) < MK_LEN[0] || mkLen(it.code) > MK_LEN[1]);
+  return { total: items.length, unique, dups, similar, badLen, extra: items.length - map.size };
+}
+
+function mkRender(res, label, cols) {
+  const out = $('out'); out.textContent = ''; out.scrollTop = 0;
+  const box = el('div', 'hero appear'), head = el('div', 'kind'), badge = el('span', 'badge');
+  badge.innerHTML = svg('<path d="M4 5v14M7 5v14M11 5v14M14 5v14M17 5v14M20 5v14"/>', 2);
+  head.append(badge, el('b', null, 'Дубли маркировки')); box.append(head);
+  const dl = el('dl');
+  [['Источник', label], ['Всего кодов', res.total], ['Уникальных', res.unique.length], ['Кодов с дублями', res.dups.length], ['Лишних повторов', res.extra], ['Неверной длины', res.badLen.length]]
+    .forEach(([t, v]) => { const d = el('div'); d.append(el('dt', null, t), el('dd', null, String(v))); dl.append(d); });
+  box.append(dl); out.append(box);
+
+  if (!res.total) { const g = group(); g.style.marginTop = '16px'; g.append(iconRow('warn', 'warn', 'Коды не найдены. В Excel кодом считается значение от ' + MK_MIN + ' символов латиницей, цифрами и знаками.')); out.append(g); return; }
+  if (cols && cols.length) out.append(el('p', 'sec-f', 'Коды найдены в столбцах: ' + cols.slice(0, 12).join(', ') + (cols.length > 12 ? '…' : '') + '.'));
+  if (!res.dups.length) { const g = group(); g.style.marginTop = '16px'; g.append(iconRow('ok', 'ok', 'Дублей нет — все ' + res.total + ' кодов уникальны.')); out.append(g); }
+
+  const LIMIT = 300;
+  if (res.dups.length) {
+    out.append(secH('Повторяющиеся коды (' + res.dups.length + ')'));
+    const g = group();
+    res.dups.slice(0, LIMIT).forEach(d => {
+      const w = d.where.slice(0, 10).join(', ') + (d.where.length > 10 ? ' и ещё ' + (d.where.length - 10) : '');
+      g.append(issueRow('err', 'Встречается ' + d.n + ' раз' + (d.n % 10 >= 2 && d.n % 10 <= 4 && (d.n % 100 < 12 || d.n % 100 > 14) ? 'а' : ''), w + (d.gs ? ' (часть со скрытым разделителем GS)' : ''), d.code));
+    });
+    if (res.dups.length > LIMIT) g.append(el('div', 'more', 'и ещё ' + (res.dups.length - LIMIT) + ' — скопируйте список дублей целиком'));
+    out.append(g);
+  }
+  if (res.badLen.length) {
+    out.append(secH('Неверная длина кода (' + res.badLen.length + ')'));
+    const g = group();
+    res.badLen.slice(0, LIMIT).forEach(it => g.append(issueRow('err', it.where, 'Длина кода маркировки — от ' + MK_LEN[0] + ' до ' + MK_LEN[1] + ' символов, а здесь ' + mkLen(it.code) + '.', it.code)));
+    if (res.badLen.length > LIMIT) g.append(el('div', 'more', 'и ещё ' + (res.badLen.length - LIMIT)));
+    out.append(g);
+  }
+  if (res.similar.length) {
+    out.append(secH('Похоже на один и тот же код (' + res.similar.length + ')'));
+    const g = group();
+    res.similar.slice(0, LIMIT).forEach(s => g.append(issueRow('warn', s.where, 'Короткий код — начало длинного. Обычно это один код: с криптохвостом и без.', s.short + '  ⟶  ' + s.long)));
+    out.append(g);
+  }
+
+  const bar = el('div', 'jbar');
+  if (res.dups.length) {
+    const b1 = el('button', 'link', 'Копировать дубли');
+    b1.onclick = () => copyText(res.dups.map(d => d.code + '\t' + d.n + '\t' + d.where.join(', ')).join('\n'));
+    bar.append(b1);
+  }
+  const b2 = el('button', 'link', 'Копировать без дублей'); b2.onclick = () => copyText(res.unique.join('\n')); bar.append(b2);
+  const b3 = el('button', 'link', 'Скачать без дублей'); b3.onclick = () => saveFile('коды без дублей.txt', new Blob([res.unique.join('\r\n')], { type: 'text/plain' })); bar.append(b3);
+  out.append(bar);
+  if (window.bgBurst) window.bgBurst();
+  toast(res.dups.length ? 'Найдено дублей: ' + res.dups.length : 'Дублей нет');
+  if (!matchMedia('(min-width:1000px)').matches) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function mkRunFile(f) {
+  const out = $('out'); out.textContent = ''; out.append(secH('Поиск дублей')); const g = group(); g.append(iconRow('info', 'info', 'Читаем ' + f.name + '…')); out.append(g);
+  try {
+    if (/\.(xlsx|xls)$/i.test(f.name)) {
+      const { X, wb } = await readWorkbook(f);
+      window.bgHold(true);
+      try { const r = mkFromSheets(X, wb); mkRender(mkAnalyze(r.items), f.name, r.cols); } finally { window.bgHold(false); }
+    } else mkRender(mkAnalyze(mkFromText(await f.text()).items), f.name);
+  } catch (e) { showError('Не удалось прочитать файл: ' + e.message, 'Подойдёт .xlsx, .xls, .csv или .txt.'); }
+}
+$('mkGo').onclick = () => { const t = $('mkSrc').value; if (!t.trim()) { showError('Поле пустое.', 'Вставьте коды или откройте файл.'); return; } mkRender(mkAnalyze(mkFromText(t).items), 'вставленный список'); };
+$('mkSrc').addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') $('mkGo').click(); });
+$('mkFile').addEventListener('change', e => { if (e.target.files[0]) mkRunFile(e.target.files[0]); e.target.value = ''; });
+const mz = $('mkZone');
+['dragenter', 'dragover'].forEach(t => mz.addEventListener(t, e => { e.preventDefault(); mz.classList.add('drop-over'); }));
+['dragleave', 'drop'].forEach(t => mz.addEventListener(t, e => { e.preventDefault(); mz.classList.remove('drop-over'); }));
+mz.addEventListener('drop', e => { const f = e.dataTransfer.files && e.dataTransfer.files[0]; if (f) mkRunFile(f); });
+
+const DESIGNS = { classic: ['Классика', '%23FF453A', '%23D70015'], didox: ['Didox', '%237C6CFF', '%232F6BFF'], rain: ['Дождь', '%235E7A92', '%2322364A'], mono: ['Графит', '%238E8E93', '%232C2C2E'], clouds: ['Облака', '%2368B8D7', '%23183550'] };
+const icon = document.querySelector('link[rel="icon"]'), iconSrc = icon.href;
+function setDesign(d, quiet) {
+  if (d === 'matrix') d = 'rain';   // раньше здесь была «Матрица»
+  if (!DESIGNS[d]) d = 'classic';
+  document.documentElement.dataset.design = d;
+  document.querySelectorAll('.dz').forEach(b => b.setAttribute('aria-checked', String(b.dataset.d === d)));
+  icon.href = iconSrc.replace('%23FF453A', DESIGNS[d][1]).replace('%23D70015', DESIGNS[d][2]);
+  try { localStorage.setItem('edo-design', d); } catch (e) {}
+  window.bgScene(d);
+  if (!quiet) toast('Дизайн: ' + DESIGNS[d][0]);
+}
+document.querySelectorAll('.dz').forEach(b => b.addEventListener('click', () => setDesign(b.dataset.d)));
+setDesign(document.documentElement.dataset.design, true);
+$('motion').addEventListener('change', e => { window.bgPause(!e.target.checked); toast(e.target.checked ? 'Анимация включена' : 'Анимация выключена'); });
+</script>
+</body>
+</html>
