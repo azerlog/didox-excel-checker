@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" data-design="ramp">
+<html lang="ru" data-design="ramp" data-theme="light">
 <script>try{var t=localStorage.getItem('edo-excel-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <head>
 <meta charset="utf-8">
@@ -159,7 +159,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 @media (max-width:999px){.clear-all{position:fixed;z-index:40;top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);height:44px;padding:0 18px;border-radius:22px;box-shadow:0 8px 24px rgba(0,0,0,.22)}}
 @keyframes pop{from{opacity:0;transform:scale(.9)}}
 /* Дизайн «Ramp»: чисто и конкретно — тонкие рамки вместо теней, плотный шрифт, цифры вместо общих слов */
-.facts{display:none}
+.facts{text-align:left;max-width:1232px;margin:0 auto}
 :root[data-design="ramp"] body{font-family:"Inter",var(--sans);letter-spacing:-.015em}
 :root[data-design="ramp"] .blob{display:none}
 :root[data-design="ramp"] canvas#bg{opacity:1}
@@ -174,7 +174,6 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 :root[data-design="ramp"] .sec-h{color:var(--label);font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:12px}
 :root[data-design="ramp"] .side>.sec-h::before{background:var(--label);border-radius:2px}
 :root[data-design="ramp"] .clear-all{border:1px solid var(--sep);box-shadow:none}
-:root[data-design="ramp"] .facts{display:block;text-align:left;max-width:1232px;margin:0 auto}
 .facts h2{font:600 clamp(26px,3.2vw,40px)/1.08 "Inter",var(--sans);letter-spacing:-.035em;margin:16px 0 8px;max-width:17em}
 .facts h2 mark{background:var(--yellow);color:var(--on-yellow);padding:0 .12em;border-radius:4px}
 .facts p{margin:0 0 18px;color:var(--sec);font-size:16px;max-width:38em}
@@ -183,7 +182,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .facts dd{margin:0;font:600 30px/1 "Inter",var(--sans);letter-spacing:-.03em}
 .facts dt{margin-top:6px;font-size:13px;color:var(--sec);line-height:1.3}
 @media (max-width:700px){.facts dl{grid-template-columns:repeat(2,minmax(0,1fr))}.facts dd{font-size:26px}}
-@media (min-width:1000px){:root[data-design="ramp"] .clear-all{top:8px;bottom:auto}:root[data-design="ramp"] .facts{padding-right:150px}}
+@media (min-width:1000px){.clear-all{top:8px;bottom:auto}.facts{padding-right:150px}}
 .side>.sec-h::before{content:"";display:inline-block;flex:none;width:6px;height:6px;border-radius:50%;background:var(--yellow);margin:0 8px 1px 0;vertical-align:middle}
 .side>.sec-h.row-h>span{flex:1}
 .large p{margin:4px 0 0;color:var(--sec);font-size:15px}
@@ -349,7 +348,7 @@ body.still .blob{animation-play-state:paused}
   <div class="screen" id="screen">
    <div class="large bare" id="large">
      <div class="facts">
-       <h2>Ошибки в шаблоне — <mark>до</mark> загрузки в Didox, а не после.</h2>
+       <h2>Найдите и исправьте ошибки в шаблоне <mark>ещё до</mark> загрузки в Didox</h2>
        <p>Проверка Excel-шаблонов по инструкции, автоисправление и поиск дублей маркировки — в одном окне.</p>
        <dl>
          <div><dd>36</dd><dt>полей Счёт-фактуры сверяются с инструкцией Didox</dt></div>
