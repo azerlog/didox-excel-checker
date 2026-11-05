@@ -602,7 +602,7 @@ body.still .sec-h::after{animation:none}
   function colors() {
     const cs = getComputedStyle(document.documentElement), g = n => cs.getPropertyValue(n).trim();
     C.l = ['--l1', '--l2', '--l3', '--l4', '--l5'].map(g);
-    C = { l: C.l, red: g('--cv-red'), gray: g('--cv-gray'), ink: g('--cv-ink'), yellow: g('--yellow'), lime: g('--cv-lime') || '#C8DA00', green: g('--cv-green') || '#5E8C1A' };
+    C = { l: C.l, glow: g('--lg-sheen'), red: g('--cv-red'), gray: g('--cv-gray'), ink: g('--cv-ink'), yellow: g('--yellow'), lime: g('--cv-lime') || '#C8DA00', green: g('--cv-green') || '#5E8C1A' };
   }
   function mkGlyph(any) {
     return { x: Math.random() * W, y: any ? Math.random() * H : H + 20, v: 10 + Math.random() * 22, ch: CH[Math.random() * CH.length | 0], sz: 9 + Math.random() * 7, z: .3 + Math.random() * .7, sw: Math.random() * 6.28 };
@@ -617,7 +617,7 @@ body.still .sec-h::after{animation:none}
     glyphs = Array.from({ length: Math.min(Math.round(W * H / 14000), 140) }, () => mkGlyph(true));
     drops = Array.from({ length: Math.min(Math.round(W * H / 4500), 280) }, () => mkDrop(true));
     docs = Array.from({ length: Math.min(Math.round(W * H / 26000), 50) }, () => mkDoc(true));
-    packets = []; tlines = []; lit = [];
+    packets = []; tlines = []; lit = []; lb = [];
     if (reduce.matches || paused) draw(performance.now());
   }
   // дождь: косые капли, ветер следует за мышью, внизу всплески; изредка далёкая молния
@@ -662,17 +662,44 @@ body.still .sec-h::after{animation:none}
       ctx.fillRect(x - sz / 2, y - sz / 2, sz, sz);
     }
   }
-  // «Стекло»: пять крупных цветных пятен плавают по кривым; края у них мягкие, поэтому лишнее размытие не нужно
+  // «Стекло»: жидкость из семи цветных капель. Каждая плавает вокруг своей точки на пружине;
+  // курсор «размешивает» жидкость — капли рядом с ним уносит вслед за движением мыши, а он сам слегка их расталкивает;
+  // клик — волна, капли разлетаются и плавно возвращаются. За курсором идёт мягкий блик света.
+  let lb = [], lpx = -999, lpy = -999, pvx = 0, pvy = 0;
+  function initLiquid() {
+    lb = Array.from({ length: 7 }, (_, i) => ({ i, ph: i * 2.1, sp: .7 + (i % 4) * .18, r: .65 + (i * 37 % 10) / 18, x: W * Math.random(), y: H * Math.random(), vx: 0, vy: 0 }));
+  }
+  addEventListener('pointerdown', e => {
+    if (scene !== 'liquid') return;
+    lb.forEach(b => { const dx = b.x - e.clientX, dy = b.y - e.clientY, d = Math.hypot(dx, dy) || 1, f = Math.max(0, 1 - d / (Math.max(W, H) * .7)) * 1400; b.vx += dx / d * f; b.vy += dy / d * f; });
+  }, { passive: true });
   function drawLiquid(dt) {
-    dotsT += dt * (1 + burst * 1.5); const t = dotsT * .12, R = Math.max(W, H) * .32;
+    if (lb.length !== 7) initLiquid();
+    dotsT += dt * (1 + burst * 1.5); const t = dotsT * .1, R = Math.max(W, H) * .34;
+    // скорость курсора, сглаженная
+    if (px > -900 && lpx > -900 && dt > 0) { pvx += ((px - lpx) / dt - pvx) * .25; pvy += ((py - lpy) / dt - pvy) * .25; } else { pvx *= .9; pvy *= .9; }
+    lpx = px; lpy = py;
+    const damp = Math.pow(.12, dt);
     ctx.globalAlpha = 1;
-    (C.l || []).forEach((col, i) => {
-      let x = W * (.5 + .38 * Math.sin(t * (1 + i * .17) + i * 1.9)), y = H * (.5 + .36 * Math.cos(t * (.8 + i * .13) + i * 2.7));
-      if (i === 0 && px > -900) { x += (px - x) * .35; y += (py - y) * .35; }
-      const g = ctx.createRadialGradient(x, y, 0, x, y, R * (.8 + .25 * Math.sin(t * 2 + i)));
-      g.addColorStop(0, col); g.addColorStop(1, 'transparent');
-      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    lb.forEach(b => {
+      const hx = W * (.5 + .4 * Math.sin(t * b.sp + b.ph)), hy = H * (.5 + .38 * Math.cos(t * b.sp * .83 + b.ph * 1.3));
+      let ax = (hx - b.x) * 1.6, ay = (hy - b.y) * 1.6;
+      if (px > -900) {
+        const dx = b.x - px, dy = b.y - py, d = Math.hypot(dx, dy) || 1, near = Math.max(0, 1 - d / (R * 1.6));
+        ax += pvx * near * 3.2 + dx / d * near * 260; ay += pvy * near * 3.2 + dy / d * near * 260;
+      }
+      b.vx = (b.vx + ax * dt) * damp; b.vy = (b.vy + ay * dt) * damp;
+      b.x += b.vx * dt; b.y += b.vy * dt;
+      const sp = Math.min(1, Math.hypot(b.vx, b.vy) / 900), rr = R * b.r * (1 + .12 * Math.sin(t * 3 + b.ph) + sp * .25);
+      const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, rr);
+      const col = C.l[b.i % C.l.length]; g.addColorStop(0, col); g.addColorStop(1, col + '00');
+      ctx.fillStyle = g; ctx.fillRect(b.x - rr, b.y - rr, rr * 2, rr * 2);
     });
+    if (px > -900 && C.glow) {
+      const g = ctx.createRadialGradient(px, py, 0, px, py, 160);
+      g.addColorStop(0, C.glow); g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = g; ctx.fillRect(px - 160, py - 160, 320, 320);
+    }
   }
   // «Терминал»: в случайных местах печатаются строки проверки, готовые «ok» зеленеют; сверху вниз идёт полоса развёртки
   const TMSG = ['$ check шаблон.xlsx', 'ИНН … 9 цифр  ok', 'ИКПУ … 17 цифр  ok', 'НДС 12%  ok', 'строка 48: дата → текст  исправлено',
