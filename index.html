@@ -350,17 +350,21 @@ canvas#bg{position:absolute;inset:0;width:100%;height:100%;opacity:.7}
 body.still .blob{animation-play-state:paused}
 /* ===== Новые дизайны «Проверки Excel»: Стекло, Терминал, Excel, Минимал (светлая и ночная тема у каждого) ===== */
 :root[data-design="glass"]{
-  --bg:#ECEEFA; --cell:rgba(255,255,255,.62); --label:#15142B; --sec:#5A5976; --ter:#9B9AB4; --sep:rgba(21,20,43,.10); --fill:rgba(21,20,43,.06);
-  --thumb:#FFFFFF; --on-tint:#FFFFFF; --tint:#6D5DF6; --tint-strong:#5B4AEC; --link:#5B4AEC; --yellow:#6D5DF6; --on-yellow:#FFFFFF; --y-text:#5B4AEC;
-  --j-key:#3A3956; --j-str:#1C8C6E; --j-num:#5B4AEC; --j-null:#9B9AB4; --mark:#DCD6FF; --mark-ink:#15142B;
-  --cv-red:#6D5DF6; --cv-gray:#9B9AB4; --cv-ink:#15142B; --g1:#8B7CFF; --g2:#3CC8F0; --g3:#FF8FCF; --glass-edge:rgba(255,255,255,.6);
+  --bg:#E9ECF8; --cell:rgba(255,255,255,.22); --label:#0E0E1A; --sec:#3D3D58; --ter:#7A7A96; --sep:rgba(255,255,255,.45); --fill:rgba(255,255,255,.28);
+  --thumb:rgba(255,255,255,.75); --on-tint:#FFFFFF; --tint:#5B4AEC; --tint-strong:#4F3EE0; --link:#3F2FD0; --yellow:#5B4AEC; --on-yellow:#FFFFFF; --y-text:#3F2FD0;
+  --j-key:#2A2946; --j-str:#0F7A5E; --j-num:#3F2FD0; --j-null:#7A7A96; --mark:rgba(91,74,236,.18); --mark-ink:#0E0E1A;
+  --cv-red:#6D5DF6; --cv-gray:#9B9AB4; --cv-ink:#0E0E1A;
+  --l1:#8B7CFF; --l2:#2EC5F5; --l3:#FF7EC8; --l4:#FFC65C; --l5:#4BE3B0;
+  --lg-edge:rgba(255,255,255,.65); --lg-hi:rgba(255,255,255,.95); --lg-lo:rgba(255,255,255,.30); --lg-shade:rgba(30,25,90,.22); --lg-sheen:rgba(255,255,255,.55);
   color-scheme:light;
 }
 :root[data-design="glass"][data-theme="dark"]{
-  --bg:#0B0B18; --cell:rgba(30,30,56,.55); --label:#F1F0FF; --sec:#A4A3C2; --ter:#666585; --sep:rgba(241,240,255,.12); --fill:rgba(241,240,255,.07);
-  --thumb:#3A3960; --on-tint:#FFFFFF; --tint:#8F82FF; --tint-strong:#7C6DFF; --link:#A79CFF; --yellow:#7C6DFF; --on-yellow:#FFFFFF; --y-text:#A79CFF;
-  --j-key:#E0DFF5; --j-str:#5FE0B8; --j-num:#A79CFF; --j-null:#666585; --mark:#3B3475; --mark-ink:#FFFFFF;
-  --cv-gray:#4A4970; --cv-ink:#F1F0FF; --g1:#4B3AD8; --g2:#0B6F96; --g3:#8A2A68; --glass-edge:rgba(255,255,255,.10);
+  --bg:#07070F; --cell:rgba(255,255,255,.07); --label:#F4F3FF; --sec:#B4B3D0; --ter:#6E6D8C; --sep:rgba(255,255,255,.14); --fill:rgba(255,255,255,.08);
+  --thumb:rgba(255,255,255,.22); --on-tint:#FFFFFF; --tint:#8F82FF; --tint-strong:#7C6DFF; --link:#B3A9FF; --yellow:#7C6DFF; --on-yellow:#FFFFFF; --y-text:#B3A9FF;
+  --j-key:#E0DFF5; --j-str:#5FE0B8; --j-num:#B3A9FF; --j-null:#6E6D8C; --mark:rgba(143,130,255,.28); --mark-ink:#FFFFFF;
+  --cv-gray:#4A4970; --cv-ink:#F4F3FF;
+  --l1:#5140E0; --l2:#0A7FB0; --l3:#A02A78; --l4:#B5751A; --l5:#13916B;
+  --lg-edge:rgba(255,255,255,.18); --lg-hi:rgba(255,255,255,.40); --lg-lo:rgba(255,255,255,.08); --lg-shade:rgba(0,0,0,.45); --lg-sheen:rgba(255,255,255,.16);
   color-scheme:dark;
 }
 :root[data-design="term"]{
@@ -412,20 +416,48 @@ body.still .blob{animation-play-state:paused}
 :root[data-design="minimal"] canvas#bg{display:none}
 :root[data-design="glass"] .clear-all,:root[data-design="term"] .clear-all,:root[data-design="paper"] .clear-all,:root[data-design="minimal"] .clear-all{border:1px solid var(--sep);box-shadow:none}
 
-/* Стекло: полупрозрачные карточки на мягком цветном градиенте */
+/* Стекло (Liquid Glass): сильное размытие и насыщение того, что под стеклом, светлая кромка, блик сверху-слева,
+   объёмная тень; кнопки — стеклянные капсулы, которые пружинят при нажатии; под стеклом плавают яркие цветные пятна */
 :root[data-design="glass"] body{font-family:"Inter",var(--sans)}
-:root[data-design="glass"] .bg{background:radial-gradient(42vmax 42vmax at 72% 18%,color-mix(in srgb,var(--g3) 40%,transparent),transparent 70%)}
-:root[data-design="glass"] .blob{filter:blur(70px);opacity:.85}
-:root[data-design="glass"] .blob.b1{background:var(--g1)}
-:root[data-design="glass"] .blob.b2{background:var(--g2)}
-:root[data-design="glass"] canvas#bg{display:none}
-:root[data-design="glass"] .group,:root[data-design="glass"] .hero,:root[data-design="glass"] .clear-all,:root[data-design="glass"] .btn-fill.plain{-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);border:1px solid var(--glass-edge);box-shadow:0 10px 30px -14px rgba(40,30,120,.30)}
-:root[data-design="glass"] .group,:root[data-design="glass"] .hero{border-radius:18px}
-:root[data-design="glass"] .btn-fill{border-radius:14px;background:linear-gradient(135deg,var(--tint),var(--g2));color:#fff}
-:root[data-design="glass"] .btn-fill.plain{background:var(--cell);color:var(--label)}
-:root[data-design="glass"] .facts h2 mark{background:linear-gradient(120deg,var(--g1),var(--g2));color:#fff;border-radius:8px}
-:root[data-design="glass"] .facts dl{border-top-color:var(--sep)}
-:root[data-design="glass"] .switch input:checked+i{background:var(--tint)}
+:root[data-design="glass"] .blob{display:none}
+:root[data-design="glass"] canvas#bg{opacity:1}
+:root[data-design="glass"] .group,:root[data-design="glass"] .hero,:root[data-design="glass"] .clear-all,:root[data-design="glass"] .btn-fill,
+:root[data-design="glass"] .lang,:root[data-design="glass"] .dz,:root[data-design="glass"] .island{
+  isolation:isolate;
+  background:var(--cell);
+  -webkit-backdrop-filter:blur(22px) saturate(1.9) brightness(1.06);backdrop-filter:blur(22px) saturate(1.9) brightness(1.06);
+  border:1px solid var(--lg-edge);
+  box-shadow:inset 0 1.5px 0 var(--lg-hi),inset 1px 0 0 var(--lg-lo),inset 0 -1px 0 var(--lg-lo),inset 0 -12px 24px -18px var(--lg-hi),0 12px 36px -14px var(--lg-shade),0 2px 6px -3px var(--lg-shade)}
+/* блик: светлая полоса по диагонали, под текстом */
+:root[data-design="glass"] .group::before,:root[data-design="glass"] .hero::before,:root[data-design="glass"] .btn-fill::before,:root[data-design="glass"] .clear-all::before,:root[data-design="glass"] .dz::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;
+  background:linear-gradient(135deg,var(--lg-sheen) 0%,transparent 32%,transparent 68%,color-mix(in srgb,var(--lg-sheen) 45%,transparent) 100%)}
+:root[data-design="glass"] .group,:root[data-design="glass"] .hero,:root[data-design="glass"] .btn-fill,:root[data-design="glass"] .lang,:root[data-design="glass"] .dz{position:relative}
+:root[data-design="glass"] .group,:root[data-design="glass"] .hero{border-radius:24px}
+:root[data-design="glass"] .group{overflow:hidden}
+:root[data-design="glass"] .cell.tap:active{background:rgba(255,255,255,.25)}
+:root[data-design="glass"] .btn-fill{border-radius:999px;color:var(--label);font-weight:600;transition:transform .35s cubic-bezier(.3,1.6,.5,1),box-shadow .25s,background .25s}
+:root[data-design="glass"] .btn-fill:hover{transform:scale(1.015)}
+:root[data-design="glass"] .btn-fill:active{transform:scale(.96);opacity:1}
+/* главная кнопка — тонированное стекло */
+:root[data-design="glass"] .btn-fill:not(.plain){background:color-mix(in srgb,var(--tint) 62%,transparent);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.18)}
+:root[data-design="glass"] .clear-all{border-radius:999px;color:var(--label)}
+:root[data-design="glass"] .lang{border-radius:999px;padding:3px}
+:root[data-design="glass"] .lang button{border-radius:999px;transition:background .3s,box-shadow .3s}
+:root[data-design="glass"] .lang button[aria-checked="true"]{background:var(--thumb);box-shadow:inset 0 1px 0 var(--lg-hi),0 4px 12px -4px var(--lg-shade)}
+:root[data-design="glass"] .dz{border-radius:18px;transition:transform .35s cubic-bezier(.3,1.6,.5,1),box-shadow .25s}
+:root[data-design="glass"] .dz i{border-radius:12px}
+:root[data-design="glass"] .dz:active{transform:scale(.95)}
+:root[data-design="glass"] .dz[aria-checked="true"]{box-shadow:inset 0 1.5px 0 var(--lg-hi),0 0 0 2px var(--tint),0 12px 30px -12px var(--tint)}
+:root[data-design="glass"] .island{background:color-mix(in srgb,var(--cell) 60%,rgba(10,10,20,.35));color:var(--label)}
+:root[data-design="glass"][data-theme="light"] .island{background:rgba(255,255,255,.45)}
+:root[data-design="glass"] .switch i{background:rgba(120,120,150,.25);box-shadow:inset 0 1px 2px rgba(0,0,0,.12)}
+:root[data-design="glass"] .switch i::after{background:rgba(255,255,255,.92);box-shadow:inset 0 1px 0 #fff,0 3px 10px rgba(0,0,0,.18)}
+:root[data-design="glass"] .switch input:checked+i{background:color-mix(in srgb,var(--tint) 75%,transparent)}
+:root[data-design="glass"] textarea{background:transparent}
+:root[data-design="glass"] .facts h2 mark{background:linear-gradient(120deg,var(--l1),var(--l2));color:#fff;border-radius:10px;padding:0 .18em}
+:root[data-design="glass"] .facts dl{border-top:1px solid var(--lg-edge)}
+:root[data-design="glass"] .res-actions.stuck{background:var(--cell);-webkit-backdrop-filter:blur(22px) saturate(1.9);backdrop-filter:blur(22px) saturate(1.9);box-shadow:inset 0 -1px 0 var(--lg-edge),0 12px 30px -16px var(--lg-shade)}
 
 /* Терминал: моноширинный шрифт, зелёный на тёмном, строки развёртки */
 :root[data-design="term"] body{font-family:"JetBrains Mono",var(--mono);letter-spacing:0;font-size:15px}
@@ -465,7 +497,7 @@ body.still .blob{animation-play-state:paused}
 :root[data-design="minimal"] .dz[aria-checked="true"]{box-shadow:0 0 0 2px var(--label)}
 
 /* превью в выборе дизайна */
-.dz-glass i{background:linear-gradient(rgba(255,255,255,.75),rgba(255,255,255,.75)) 9px 11px/38px 18px no-repeat,radial-gradient(circle at 22% 28%,#8B7CFF 0 22%,transparent 62%),radial-gradient(circle at 82% 78%,#3CC8F0 0 20%,transparent 62%),radial-gradient(circle at 80% 15%,#FF8FCF 0 12%,transparent 50%),#ECEEFA}
+.dz-glass i{background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,255,255,.35)) 9px 10px/40px 20px no-repeat,radial-gradient(circle at 22% 28%,#8B7CFF 0 22%,transparent 62%),radial-gradient(circle at 82% 78%,#3CC8F0 0 20%,transparent 62%),radial-gradient(circle at 80% 15%,#FF8FCF 0 12%,transparent 50%),#ECEEFA}
 .dz-term i{background:linear-gradient(#3DFF7A 0 0) 8px 10px/30px 3px no-repeat,linear-gradient(#3DFF7A 0 0) 8px 18px/20px 3px no-repeat,linear-gradient(#3DFF7A 0 0) 8px 26px/7px 8px no-repeat,#07100A}
 .dz-paper i{background:linear-gradient(#107C41,#107C41) 21px 10px/2px 10px no-repeat,linear-gradient(#107C41,#107C41) 21px 10px/21px 2px no-repeat,linear-gradient(#107C41,#107C41) 21px 18px/21px 2px no-repeat,linear-gradient(#107C41,#107C41) 41px 10px/2px 10px no-repeat,linear-gradient(#C6EFCE,#C6EFCE) 1px 20px/20px 9px no-repeat,repeating-linear-gradient(90deg,#C9D3CD 0 1px,transparent 1px 20px),repeating-linear-gradient(#C9D3CD 0 1px,transparent 1px 10px),#FFFFFF}
 .dz-minimal i{background:linear-gradient(#111 0 0) 10px 13px/34px 3px no-repeat,linear-gradient(#BBB 0 0) 10px 21px/22px 3px no-repeat,#FFFFFF;box-shadow:inset 0 0 0 1px #DDD}
@@ -565,11 +597,12 @@ body.still .sec-h::after{animation:none}
   let C = {};
   const LINK = 150;
   let hold = false;
-  const SCENES = { classic: 'net', didox: 'docs', rain: 'rain', mono: 'glyphs', clouds: 'clouds', ramp: 'dots', glass: 'none', term: 'term', paper: 'cells', minimal: 'none' };
+  const SCENES = { classic: 'net', didox: 'docs', rain: 'rain', mono: 'glyphs', clouds: 'clouds', ramp: 'dots', glass: 'liquid', term: 'term', paper: 'cells', minimal: 'none' };
   let scene = 'net', drops = [], splashes = [], docs = [], flash = 0, nextFlash = 0, dotsT = 0, tlines = [], tNext = 0, lit = [], cNext = 0;
   function colors() {
     const cs = getComputedStyle(document.documentElement), g = n => cs.getPropertyValue(n).trim();
-    C = { red: g('--cv-red'), gray: g('--cv-gray'), ink: g('--cv-ink'), yellow: g('--yellow'), lime: g('--cv-lime') || '#C8DA00', green: g('--cv-green') || '#5E8C1A' };
+    C.l = ['--l1', '--l2', '--l3', '--l4', '--l5'].map(g);
+    C = { l: C.l, red: g('--cv-red'), gray: g('--cv-gray'), ink: g('--cv-ink'), yellow: g('--yellow'), lime: g('--cv-lime') || '#C8DA00', green: g('--cv-green') || '#5E8C1A' };
   }
   function mkGlyph(any) {
     return { x: Math.random() * W, y: any ? Math.random() * H : H + 20, v: 10 + Math.random() * 22, ch: CH[Math.random() * CH.length | 0], sz: 9 + Math.random() * 7, z: .3 + Math.random() * .7, sw: Math.random() * 6.28 };
@@ -628,6 +661,18 @@ body.still .sec-h::after{animation:none}
       ctx.fillStyle = k > .8 ? C.green : k > .5 ? C.lime : C.gray;
       ctx.fillRect(x - sz / 2, y - sz / 2, sz, sz);
     }
+  }
+  // «Стекло»: пять крупных цветных пятен плавают по кривым; края у них мягкие, поэтому лишнее размытие не нужно
+  function drawLiquid(dt) {
+    dotsT += dt * (1 + burst * 1.5); const t = dotsT * .12, R = Math.max(W, H) * .32;
+    ctx.globalAlpha = 1;
+    (C.l || []).forEach((col, i) => {
+      let x = W * (.5 + .38 * Math.sin(t * (1 + i * .17) + i * 1.9)), y = H * (.5 + .36 * Math.cos(t * (.8 + i * .13) + i * 2.7));
+      if (i === 0 && px > -900) { x += (px - x) * .35; y += (py - y) * .35; }
+      const g = ctx.createRadialGradient(x, y, 0, x, y, R * (.8 + .25 * Math.sin(t * 2 + i)));
+      g.addColorStop(0, col); g.addColorStop(1, 'transparent');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    });
   }
   // «Терминал»: в случайных местах печатаются строки проверки, готовые «ok» зеленеют; сверху вниз идёт полоса развёртки
   const TMSG = ['$ check шаблон.xlsx', 'ИНН … 9 цифр  ok', 'ИКПУ … 17 цифр  ok', 'НДС 12%  ok', 'строка 48: дата → текст  исправлено',
@@ -801,6 +846,7 @@ body.still .sec-h::after{animation:none}
     else if (scene === 'docs') drawDocs(dt);
     else if (scene === 'dots') drawDots(dt);
     else if (scene === 'term') drawTerm(dt, now);
+    else if (scene === 'liquid') drawLiquid(dt);
     else if (scene === 'cells') drawCells(dt);
 
     // символы base64
