@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru" data-design="ramp" data-theme="light">
-<script>try{var t=localStorage.getItem('edo-excel-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<script>try{var t=localStorage.getItem('edo-excel-theme');if(t)document.documentElement.dataset.theme=t;var d=localStorage.getItem('edo-excel-design');if(/^(ramp|glass|term|paper|minimal)$/.test(d))document.documentElement.dataset.design=d}catch(e){}</script>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -348,6 +348,130 @@ canvas#bg{position:absolute;inset:0;width:100%;height:100%;opacity:.7}
 .dz-mono i{background:radial-gradient(circle at 80% 30%,#FFE01B 0 5px,transparent 6px),linear-gradient(135deg,#8E8E93,#2C2C2E)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 body.still .blob{animation-play-state:paused}
+/* ===== Новые дизайны «Проверки Excel»: Стекло, Терминал, Excel, Минимал (светлая и ночная тема у каждого) ===== */
+:root[data-design="glass"]{
+  --bg:#ECEEFA; --cell:rgba(255,255,255,.62); --label:#15142B; --sec:#5A5976; --ter:#9B9AB4; --sep:rgba(21,20,43,.10); --fill:rgba(21,20,43,.06);
+  --thumb:#FFFFFF; --on-tint:#FFFFFF; --tint:#6D5DF6; --tint-strong:#5B4AEC; --link:#5B4AEC; --yellow:#6D5DF6; --on-yellow:#FFFFFF; --y-text:#5B4AEC;
+  --j-key:#3A3956; --j-str:#1C8C6E; --j-num:#5B4AEC; --j-null:#9B9AB4; --mark:#DCD6FF; --mark-ink:#15142B;
+  --cv-red:#6D5DF6; --cv-gray:#9B9AB4; --cv-ink:#15142B; --g1:#8B7CFF; --g2:#3CC8F0; --g3:#FF8FCF; --glass-edge:rgba(255,255,255,.6);
+  color-scheme:light;
+}
+:root[data-design="glass"][data-theme="dark"]{
+  --bg:#0B0B18; --cell:rgba(30,30,56,.55); --label:#F1F0FF; --sec:#A4A3C2; --ter:#666585; --sep:rgba(241,240,255,.12); --fill:rgba(241,240,255,.07);
+  --thumb:#3A3960; --on-tint:#FFFFFF; --tint:#8F82FF; --tint-strong:#7C6DFF; --link:#A79CFF; --yellow:#7C6DFF; --on-yellow:#FFFFFF; --y-text:#A79CFF;
+  --j-key:#E0DFF5; --j-str:#5FE0B8; --j-num:#A79CFF; --j-null:#666585; --mark:#3B3475; --mark-ink:#FFFFFF;
+  --cv-gray:#4A4970; --cv-ink:#F1F0FF; --g1:#4B3AD8; --g2:#0B6F96; --g3:#8A2A68; --glass-edge:rgba(255,255,255,.10);
+  color-scheme:dark;
+}
+:root[data-design="term"]{
+  --bg:#F1F4EE; --cell:#FAFCF8; --label:#0E2213; --sec:#4C6352; --ter:#8FA394; --sep:rgba(14,34,19,.16); --fill:rgba(14,34,19,.06);
+  --thumb:#FFFFFF; --on-tint:#F1F4EE; --tint:#0E7A34; --tint-strong:#0E7A34; --link:#0E7A34; --yellow:#0E2213; --on-yellow:#7CFF9E; --y-text:#0E7A34; --green:#0E7A34;
+  --j-key:#0E2213; --j-str:#0E7A34; --j-num:#8A5A00; --j-null:#8FA394; --mark:#0E2213; --mark-ink:#7CFF9E;
+  --cv-red:#0E7A34; --cv-gray:#9DB3A2; --cv-ink:#0E2213; --cv-green:#0E7A34;
+  color-scheme:light;
+}
+:root[data-design="term"][data-theme="dark"]{
+  --bg:#050906; --cell:#0B120D; --label:#C6F6D2; --sec:#7FA88A; --ter:#4A6552; --sep:rgba(61,255,122,.16); --fill:rgba(61,255,122,.07);
+  --thumb:#1C2B20; --on-tint:#050906; --tint:#3DFF7A; --tint-strong:#3DFF7A; --link:#3DFF7A; --yellow:#3DFF7A; --on-yellow:#050906; --y-text:#3DFF7A; --green:#3DFF7A;
+  --j-key:#C6F6D2; --j-str:#3DFF7A; --j-num:#FFD166; --j-null:#4A6552; --mark:#3DFF7A; --mark-ink:#050906;
+  --cv-gray:#3F6A4C; --cv-ink:#C6F6D2; --cv-green:#3DFF7A;
+  color-scheme:dark;
+}
+:root[data-design="paper"]{
+  --bg:#F3F5F4; --cell:#FFFFFF; --label:#1E2A23; --sec:#5D6B63; --ter:#9AA59F; --sep:#D5DCD8; --fill:rgba(16,124,65,.06);
+  --thumb:#FFFFFF; --on-tint:#FFFFFF; --tint:#107C41; --tint-strong:#107C41; --link:#0E6B38; --yellow:#107C41; --on-yellow:#FFFFFF; --y-text:#0E6B38; --green:#107C41;
+  --j-key:#1E2A23; --j-str:#107C41; --j-num:#0E6B38; --j-null:#9AA59F; --mark:#C6EFCE; --mark-ink:#0A4F2A;
+  --cv-red:#107C41; --cv-gray:#D9E0DC; --cv-ink:#1E2A23; --cv-green:#107C41; --cv-lime:#C6EFCE;
+  color-scheme:light;
+}
+:root[data-design="paper"][data-theme="dark"]{
+  --bg:#0F1311; --cell:#181D1A; --label:#E3EBE6; --sec:#9AA89F; --ter:#5E6B63; --sep:#2C3530; --fill:rgba(59,178,115,.08);
+  --thumb:#2C3530; --on-tint:#FFFFFF; --tint:#3BB273; --tint-strong:#2E9E62; --link:#5CCB8D; --yellow:#2E9E62; --on-yellow:#FFFFFF; --y-text:#5CCB8D; --green:#3BB273;
+  --j-key:#E3EBE6; --j-str:#5CCB8D; --j-num:#8FDCB0; --j-null:#5E6B63; --mark:#1F4D33; --mark-ink:#E3EBE6;
+  --cv-gray:#232B26; --cv-ink:#E3EBE6; --cv-green:#3BB273; --cv-lime:#1F4D33;
+  color-scheme:dark;
+}
+:root[data-design="minimal"]{
+  --bg:#FFFFFF; --cell:#FFFFFF; --label:#111111; --sec:#666666; --ter:#A0A0A0; --sep:rgba(0,0,0,.12); --fill:rgba(0,0,0,.04);
+  --thumb:#FFFFFF; --on-tint:#FFFFFF; --tint:#111111; --tint-strong:#111111; --link:#111111; --yellow:#111111; --on-yellow:#FFFFFF; --y-text:#111111;
+  --j-key:#111111; --j-str:#2F6B3A; --j-num:#111111; --j-null:#A0A0A0; --mark:rgba(0,0,0,.08); --mark-ink:#111111;
+  --cv-red:#111111; --cv-gray:#CCCCCC; --cv-ink:#111111;
+  color-scheme:light;
+}
+:root[data-design="minimal"][data-theme="dark"]{
+  --bg:#0A0A0A; --cell:#0A0A0A; --label:#EDEDED; --sec:#9A9A9A; --ter:#5A5A5A; --sep:rgba(255,255,255,.14); --fill:rgba(255,255,255,.06);
+  --thumb:#2A2A2A; --on-tint:#0A0A0A; --tint:#EDEDED; --tint-strong:#EDEDED; --link:#EDEDED; --yellow:#EDEDED; --on-yellow:#0A0A0A; --y-text:#EDEDED;
+  --j-key:#EDEDED; --j-str:#8FD19E; --j-num:#EDEDED; --j-null:#5A5A5A; --mark:rgba(255,255,255,.12); --mark-ink:#EDEDED;
+  --cv-gray:#333333; --cv-ink:#EDEDED;
+  color-scheme:dark;
+}
+
+/* общее для новых дизайнов */
+:root[data-design="term"] .blob,:root[data-design="paper"] .blob,:root[data-design="minimal"] .blob{display:none}
+:root[data-design="term"] canvas#bg,:root[data-design="paper"] canvas#bg{opacity:1}
+:root[data-design="minimal"] canvas#bg{display:none}
+:root[data-design="glass"] .clear-all,:root[data-design="term"] .clear-all,:root[data-design="paper"] .clear-all,:root[data-design="minimal"] .clear-all{border:1px solid var(--sep);box-shadow:none}
+
+/* Стекло: полупрозрачные карточки на мягком цветном градиенте */
+:root[data-design="glass"] body{font-family:"Inter",var(--sans)}
+:root[data-design="glass"] .bg{background:radial-gradient(42vmax 42vmax at 72% 18%,color-mix(in srgb,var(--g3) 40%,transparent),transparent 70%)}
+:root[data-design="glass"] .blob{filter:blur(70px);opacity:.85}
+:root[data-design="glass"] .blob.b1{background:var(--g1)}
+:root[data-design="glass"] .blob.b2{background:var(--g2)}
+:root[data-design="glass"] canvas#bg{display:none}
+:root[data-design="glass"] .group,:root[data-design="glass"] .hero,:root[data-design="glass"] .clear-all,:root[data-design="glass"] .btn-fill.plain{-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);border:1px solid var(--glass-edge);box-shadow:0 10px 30px -14px rgba(40,30,120,.30)}
+:root[data-design="glass"] .group,:root[data-design="glass"] .hero{border-radius:18px}
+:root[data-design="glass"] .btn-fill{border-radius:14px;background:linear-gradient(135deg,var(--tint),var(--g2));color:#fff}
+:root[data-design="glass"] .btn-fill.plain{background:var(--cell);color:var(--label)}
+:root[data-design="glass"] .facts h2 mark{background:linear-gradient(120deg,var(--g1),var(--g2));color:#fff;border-radius:8px}
+:root[data-design="glass"] .facts dl{border-top-color:var(--sep)}
+:root[data-design="glass"] .switch input:checked+i{background:var(--tint)}
+
+/* Терминал: моноширинный шрифт, зелёный на тёмном, строки развёртки */
+:root[data-design="term"] body{font-family:"JetBrains Mono",var(--mono);letter-spacing:0;font-size:15px}
+:root[data-design="term"] .bg::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(transparent 0 2px,color-mix(in srgb,var(--cv-green) 5%,transparent) 2px 3px)}
+:root[data-design="term"] .facts h2,:root[data-design="term"] .facts dd{font-family:"JetBrains Mono",var(--mono);letter-spacing:-.03em}
+:root[data-design="term"] .facts h2::before{content:"> ";color:var(--tint)}
+:root[data-design="term"] .facts h2 mark{border-radius:0}
+:root[data-design="term"] .facts dl{border-top:1px dashed var(--tint)}
+:root[data-design="term"] .group,:root[data-design="term"] .hero{border:1px solid var(--sep);border-radius:6px;box-shadow:none}
+:root[data-design="term"] .btn-fill{border-radius:6px;font-family:"JetBrains Mono",var(--mono);font-size:15px;background:var(--yellow);color:var(--on-yellow)}
+:root[data-design="term"] .btn-fill.plain{background:transparent;border:1px solid var(--tint);color:var(--tint)}
+:root[data-design="term"] .sec-h{color:var(--tint);font-weight:500}
+:root[data-design="term"] .sec-h::after{content:"_";animation:blink 1.06s steps(1) infinite}
+:root[data-design="term"] .dz,:root[data-design="term"] .dz i,:root[data-design="term"] .lang,:root[data-design="term"] .lang button,:root[data-design="term"] .clear-all{border-radius:4px}
+:root[data-design="term"] .switch i,:root[data-design="term"] .switch i::after{border-radius:4px}
+:root[data-design="term"] .switch input:checked+i{background:var(--tint)}
+@keyframes blink{50%{opacity:0}}
+
+/* Excel: лист в клетку, строгие углы, зелёный Excel */
+:root[data-design="paper"] body{font-family:"Segoe UI","Inter",var(--sans)}
+:root[data-design="paper"] .group,:root[data-design="paper"] .hero{border:1px solid var(--sep);border-radius:4px;box-shadow:none}
+:root[data-design="paper"] .btn-fill{border-radius:4px;background:var(--tint-strong);color:#fff}
+:root[data-design="paper"] .btn-fill.plain{background:var(--cell);color:var(--link);border:1px solid var(--sep)}
+:root[data-design="paper"] .sec-h{color:var(--sec);font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:12px}
+:root[data-design="paper"] .facts h2 mark{background:var(--mark);color:var(--mark-ink);border-radius:0;box-shadow:inset 0 -3px 0 var(--tint)}
+:root[data-design="paper"] .facts dl{border-top:2px solid var(--tint)}
+:root[data-design="paper"] .dz,:root[data-design="paper"] .dz i,:root[data-design="paper"] .lang,:root[data-design="paper"] .lang button,:root[data-design="paper"] .clear-all{border-radius:4px}
+:root[data-design="paper"] .switch input:checked+i{background:var(--tint)}
+
+/* Минимал: без фона и анимации, только текст и тонкие линии */
+:root[data-design="minimal"] body{font-family:"Inter",var(--sans)}
+:root[data-design="minimal"] .group,:root[data-design="minimal"] .hero{border:1px solid var(--sep);border-radius:10px;box-shadow:none}
+:root[data-design="minimal"] .btn-fill{border-radius:10px;background:var(--label);color:var(--bg)}
+:root[data-design="minimal"] .btn-fill.plain{background:transparent;border:1px solid var(--label);color:var(--label)}
+:root[data-design="minimal"] .facts h2 mark{background:none;color:inherit;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:.12em}
+:root[data-design="minimal"] .switch input:checked+i{background:var(--label)}
+:root[data-design="minimal"] .dz[aria-checked="true"]{box-shadow:0 0 0 2px var(--label)}
+
+/* превью в выборе дизайна */
+.dz-glass i{background:linear-gradient(rgba(255,255,255,.75),rgba(255,255,255,.75)) 9px 11px/38px 18px no-repeat,radial-gradient(circle at 22% 28%,#8B7CFF 0 22%,transparent 62%),radial-gradient(circle at 82% 78%,#3CC8F0 0 20%,transparent 62%),radial-gradient(circle at 80% 15%,#FF8FCF 0 12%,transparent 50%),#ECEEFA}
+.dz-term i{background:linear-gradient(#3DFF7A 0 0) 8px 10px/30px 3px no-repeat,linear-gradient(#3DFF7A 0 0) 8px 18px/20px 3px no-repeat,linear-gradient(#3DFF7A 0 0) 8px 26px/7px 8px no-repeat,#07100A}
+.dz-paper i{background:linear-gradient(#107C41,#107C41) 21px 10px/2px 10px no-repeat,linear-gradient(#107C41,#107C41) 21px 10px/21px 2px no-repeat,linear-gradient(#107C41,#107C41) 21px 18px/21px 2px no-repeat,linear-gradient(#107C41,#107C41) 41px 10px/2px 10px no-repeat,linear-gradient(#C6EFCE,#C6EFCE) 1px 20px/20px 9px no-repeat,repeating-linear-gradient(90deg,#C9D3CD 0 1px,transparent 1px 20px),repeating-linear-gradient(#C9D3CD 0 1px,transparent 1px 10px),#FFFFFF}
+.dz-minimal i{background:linear-gradient(#111 0 0) 10px 13px/34px 3px no-repeat,linear-gradient(#BBB 0 0) 10px 21px/22px 3px no-repeat,#FFFFFF;box-shadow:inset 0 0 0 1px #DDD}
+.designs.x5{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media (max-width:420px){.designs.x5{grid-template-columns:repeat(3,minmax(0,1fr))}}
+body.still .sec-h::after{animation:none}
 </style>
 </head>
 <body>
@@ -398,7 +522,14 @@ body.still .blob{animation-play-state:paused}
 
    <div class="sec-h">Оформление</div>
    <div class="group">
-     <div class="cell"><span class="lbl" id="themeLbl">Тема</span>
+     <div class="designs x5" role="radiogroup" aria-label="Дизайн">
+       <button class="dz dz-ramp" data-d="ramp" role="radio" aria-checked="true"><i></i>Ramp</button>
+       <button class="dz dz-glass" data-d="glass" role="radio" aria-checked="false"><i></i>Стекло</button>
+       <button class="dz dz-term" data-d="term" role="radio" aria-checked="false"><i></i>Терминал</button>
+       <button class="dz dz-paper" data-d="paper" role="radio" aria-checked="false"><i></i>Excel</button>
+       <button class="dz dz-minimal" data-d="minimal" role="radio" aria-checked="false"><i></i>Минимал</button>
+     </div>
+     <div class="cell" style="border-top:.5px solid var(--sep)"><span class="lbl" id="themeLbl">Тема</span>
        <span class="lang" role="radiogroup" aria-labelledby="themeLbl"><button data-t="light" role="radio" aria-checked="true">Светлая</button><button data-t="dark" role="radio" aria-checked="false">Ночная</button></span></div>
      <div class="cell" style="border-top:.5px solid var(--sep)"><span class="lbl" id="motionLbl">Анимация фона</span><span class="switch"><input type="checkbox" id="motion" checked aria-labelledby="motionLbl"><i></i></span></div>
    </div>
@@ -434,8 +565,8 @@ body.still .blob{animation-play-state:paused}
   let C = {};
   const LINK = 150;
   let hold = false;
-  const SCENES = { classic: 'net', didox: 'docs', rain: 'rain', mono: 'glyphs', clouds: 'clouds', ramp: 'dots' };
-  let scene = 'net', drops = [], splashes = [], docs = [], flash = 0, nextFlash = 0, dotsT = 0;
+  const SCENES = { classic: 'net', didox: 'docs', rain: 'rain', mono: 'glyphs', clouds: 'clouds', ramp: 'dots', glass: 'none', term: 'term', paper: 'cells', minimal: 'none' };
+  let scene = 'net', drops = [], splashes = [], docs = [], flash = 0, nextFlash = 0, dotsT = 0, tlines = [], tNext = 0, lit = [], cNext = 0;
   function colors() {
     const cs = getComputedStyle(document.documentElement), g = n => cs.getPropertyValue(n).trim();
     C = { red: g('--cv-red'), gray: g('--cv-gray'), ink: g('--cv-ink'), yellow: g('--yellow'), lime: g('--cv-lime') || '#C8DA00', green: g('--cv-green') || '#5E8C1A' };
@@ -453,7 +584,7 @@ body.still .blob{animation-play-state:paused}
     glyphs = Array.from({ length: Math.min(Math.round(W * H / 14000), 140) }, () => mkGlyph(true));
     drops = Array.from({ length: Math.min(Math.round(W * H / 4500), 280) }, () => mkDrop(true));
     docs = Array.from({ length: Math.min(Math.round(W * H / 26000), 50) }, () => mkDoc(true));
-    packets = [];
+    packets = []; tlines = []; lit = [];
     if (reduce.matches || paused) draw(performance.now());
   }
   // дождь: косые капли, ветер следует за мышью, внизу всплески; изредка далёкая молния
@@ -496,6 +627,54 @@ body.still .blob{animation-play-state:paused}
       ctx.globalAlpha = .35 + k * .55;
       ctx.fillStyle = k > .8 ? C.green : k > .5 ? C.lime : C.gray;
       ctx.fillRect(x - sz / 2, y - sz / 2, sz, sz);
+    }
+  }
+  // «Терминал»: в случайных местах печатаются строки проверки, готовые «ok» зеленеют; сверху вниз идёт полоса развёртки
+  const TMSG = ['$ check шаблон.xlsx', 'ИНН … 9 цифр  ok', 'ИКПУ … 17 цифр  ok', 'НДС 12%  ok', 'строка 48: дата → текст  исправлено',
+    'дубли маркировки: 0', 'формат ячеек: Текстовый', 'лист «СФ» … ok', 'сумма с НДС  ok', 'код маркировки … уникален', 'единица измерения  ok'];
+  function drawTerm(dt, now) {
+    tNext -= dt * (1 + burst * 6);
+    if (tNext <= 0 && tlines.length < Math.max(4, Math.min(16, W * H / 70000 | 0))) {
+      tNext = .5 + Math.random() * 1.1;
+      tlines.push({ x: 16 + Math.random() * Math.max(10, W - 300) | 0, y: (Math.random() * (H / 22) | 0) * 22 + 14, s: TMSG[Math.random() * TMSG.length | 0], t: 0 });
+    }
+    ctx.font = '13px "JetBrains Mono", monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    const blink = (now / 530 | 0) % 2;
+    tlines = tlines.filter(l => {
+      l.t += dt * (1 + burst * 2);
+      const n = Math.min(l.s.length, l.t * 26 | 0), typing = n < l.s.length, life = l.s.length / 26 + 3.5;
+      const a = l.t > life ? 1 - (l.t - life) : 1; if (a <= 0) return false;
+      const txt = l.s.slice(0, n), good = !typing && /ok$|исправлено$|: 0$|Текстовый$|уникален$/.test(l.s);
+      ctx.globalAlpha = (good ? .6 : .5) * a; ctx.fillStyle = good ? C.green : C.gray;
+      ctx.fillText(txt, l.x, l.y);
+      if (typing || blink) ctx.fillRect(l.x + ctx.measureText(txt).width + 3, l.y - 7, 7, 14);
+      return true;
+    });
+    dotsT += dt;
+    const sy = (dotsT * 70) % (H + 160) - 80, g = ctx.createLinearGradient(0, sy - 80, 0, sy + 80);
+    g.addColorStop(0, 'transparent'); g.addColorStop(.5, C.green); g.addColorStop(1, 'transparent');
+    ctx.globalAlpha = .06; ctx.fillStyle = g; ctx.fillRect(0, sy - 80, W, 160);
+  }
+  // «Excel»: сетка листа, ячейки по очереди «заполняются» и зеленеют; под курсором — рамка выделения с маркером
+  function drawCells(dt) {
+    const cw = 76, ch = 24;
+    ctx.globalAlpha = 1; ctx.strokeStyle = C.gray; ctx.lineWidth = 1; ctx.beginPath();
+    for (let x = cw; x < W; x += cw) { ctx.moveTo(x + .5, 0); ctx.lineTo(x + .5, H); }
+    for (let y = ch; y < H; y += ch) { ctx.moveTo(0, y + .5); ctx.lineTo(W, y + .5); }
+    ctx.stroke();
+    cNext -= dt * (1 + burst * 12);
+    if (cNext <= 0 && lit.length < 46) { cNext = .16 + Math.random() * .3; lit.push({ c: Math.random() * W / cw | 0, r: Math.random() * H / ch | 0, t: 0, life: 2.2 + Math.random() * 3, w: .3 + Math.random() * .5 }); }
+    lit = lit.filter(k => {
+      k.t += dt; if (k.t > k.life) return false;
+      const a = Math.sin(Math.PI * k.t / k.life), x = k.c * cw, y = k.r * ch;
+      ctx.globalAlpha = .9 * a; ctx.fillStyle = C.lime; ctx.fillRect(x + 1, y + 1, cw - 1, ch - 1);
+      ctx.globalAlpha = .55 * a; ctx.fillStyle = C.green; ctx.fillRect(x + 7, y + ch / 2 - 2, (cw - 14) * k.w * Math.min(1, k.t * 3), 4);
+      return true;
+    });
+    if (px > -900) {
+      const x = (px / cw | 0) * cw, y = (py / ch | 0) * ch;
+      ctx.globalAlpha = .9; ctx.strokeStyle = C.green; ctx.lineWidth = 2; ctx.strokeRect(x + 1, y + 1, cw - 1, ch - 1);
+      ctx.fillStyle = C.green; ctx.fillRect(x + cw - 3, y + ch - 3, 6, 6);
     }
   }
   // документы: всплывают снизу, покачиваются и по пути получают подпись — галочку в кружке
@@ -621,6 +800,8 @@ body.still .blob{animation-play-state:paused}
     } else if (scene === 'rain') drawRain(dt, now);
     else if (scene === 'docs') drawDocs(dt);
     else if (scene === 'dots') drawDots(dt);
+    else if (scene === 'term') drawTerm(dt, now);
+    else if (scene === 'cells') drawCells(dt);
 
     // символы base64
     const boost = 1 + burst * 7; burst = Math.max(0, burst - dt * .9);
@@ -1679,13 +1860,24 @@ const mz = $('mkZone');
 ['dragleave', 'drop'].forEach(t => mz.addEventListener(t, e => { e.preventDefault(); mz.classList.remove('drop-over'); }));
 mz.addEventListener('drop', e => { const f = e.dataTransfer.files && e.dataTransfer.files[0]; if (f) mkRunFile(f); });
 
-// Только дизайн «Ramp»: светлая или ночная тема, выбор запоминается в браузере
+// Дизайн (Ramp по умолчанию) и тема — светлая или ночная; выбор запоминается в браузере
+const DESIGNS = { ramp: 'Ramp', glass: 'Стекло', term: 'Терминал', paper: 'Excel', minimal: 'Минимал' };
+function setDesign(d, quiet) {
+  if (!DESIGNS[d]) d = 'ramp';
+  document.documentElement.dataset.design = d;
+  document.querySelectorAll('[data-d]').forEach(b => b.setAttribute('aria-checked', String(b.dataset.d === d)));
+  try { localStorage.setItem('edo-excel-design', d); } catch (e) {}
+  window.bgScene(d);
+  if (!quiet) toast('Дизайн: ' + DESIGNS[d]);
+}
+document.querySelectorAll('[data-d]').forEach(b => b.addEventListener('click', () => setDesign(b.dataset.d)));
+setDesign(document.documentElement.dataset.design, true);
 function setTheme(t, quiet) {
   if (t !== 'dark') t = 'light';
   document.documentElement.dataset.theme = t;
   document.querySelectorAll('[data-t]').forEach(b => b.setAttribute('aria-checked', String(b.dataset.t === t)));
   try { localStorage.setItem('edo-excel-theme', t); } catch (e) {}
-  window.bgScene('ramp');
+  window.bgScene(document.documentElement.dataset.design);
   if (!quiet) toast(t === 'dark' ? 'Ночная тема' : 'Светлая тема');
 }
 document.querySelectorAll('[data-t]').forEach(b => b.addEventListener('click', () => setTheme(b.dataset.t)));
