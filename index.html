@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru" data-design="classic">
-<script>try{var d=localStorage.getItem('edo-design');if(d)document.documentElement.dataset.design=d}catch(e){}</script>
+<html lang="ru" data-design="ramp">
+<script>try{var t=localStorage.getItem('edo-excel-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Проверка Excel</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF453A'/%3E%3Cstop offset='1' stop-color='%23D70015'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Cpath d='M20 14h17l9 9v27H20z' fill='none' stroke='white' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M25 41c4-6 6 2 9-3s4 2 7-1' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='14' r='7' fill='%23FFE01B'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%230B0B0B'/%3E%3Cstop offset='1' stop-color='%23333333'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Cpath d='M20 14h17l9 9v27H20z' fill='none' stroke='white' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M25 41c4-6 6 2 9-3s4 2 7-1' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='14' r='7' fill='%23E4F222'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -55,6 +55,14 @@
   --j-key:#3A3A36; --j-str:#3F6B00; --j-num:#0B0B0B; --j-null:#9A9A92; --mark:#EEF57A; --mark-ink:#0B0B0B;
   --cv-red:#0B0B0B; --cv-gray:#B4B3A9; --cv-ink:#0B0B0B; --cv-lime:#C8DA00; --cv-green:#5E8C1A;
   color-scheme:light;
+}
+/* ночная тема Ramp — включается выбором темы (data-theme="dark"), а не системной настройкой */
+:root[data-design="ramp"][data-theme="dark"]{
+  --bg:#0E0E0C; --cell:#181816; --label:#F4F2EC; --sec:#A3A29A; --ter:#6B6A64; --sep:rgba(244,242,236,.12); --fill:rgba(244,242,236,.07);
+  --thumb:#2E2E2A; --on-tint:#0B0B0B; --tint:#F4F2EC; --tint-strong:#F4F2EC; --link:#F4F2EC; --y-text:#E4F222;
+  --j-key:#E5E4DE; --j-str:#B5D86A; --j-num:#E4F222; --j-null:#6B6A64; --mark:#4A5200; --mark-ink:#FFFFFF;
+  --cv-gray:#3C3C37; --cv-ink:#F4F2EC; --cv-lime:#C8DA00; --cv-green:#8FC93A;
+  color-scheme:dark;
 }
 :root[data-design="rain"]{--bg:#E4EAF0; --tint:#3B6E8F; --tint-strong:#2C5873; --link:#2C5873; --mark:#D3E3EE; --cv-red:#3F7CA6; --cv-gray:#7A93A8}
 @media (prefers-color-scheme:dark){
@@ -158,10 +166,10 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 :root[data-design="ramp"] .group,:root[data-design="ramp"] .hero,:root[data-design="ramp"] .json{border:1px solid var(--sep);box-shadow:none}
 :root[data-design="ramp"] .hero{border-radius:12px}
 :root[data-design="ramp"] .btn-fill{border-radius:10px;font-weight:600;letter-spacing:-.01em;background:var(--yellow);color:var(--on-yellow)}
-:root[data-design="ramp"] .btn-fill.accent{background:#0B0B0B;color:#FFFFFF}
+:root[data-design="ramp"] .btn-fill.accent{background:var(--label);color:var(--bg)}
 :root[data-design="ramp"] .btn-fill.plain{background:var(--cell);color:var(--label)}
 :root[data-design="ramp"] .switch input:checked+i{background:#5E8C1A}
-:root[data-design="ramp"] .dz[aria-checked="true"]{box-shadow:0 0 0 2px #0B0B0B}
+:root[data-design="ramp"] .dz[aria-checked="true"]{box-shadow:0 0 0 2px var(--label)}
 :root[data-design="ramp"] .btn-fill.plain{border:1px solid var(--label)}
 :root[data-design="ramp"] .sec-h{color:var(--label);font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:12px}
 :root[data-design="ramp"] .side>.sec-h::before{background:var(--label);border-radius:2px}
@@ -339,8 +347,7 @@ body.still .blob{animation-play-state:paused}
  <div class="device">
   <div class="island" id="toast" role="status" aria-live="polite"><i class="dot" aria-hidden="true"></i><span id="toastText"></span></div>
   <div class="screen" id="screen">
-   <div class="large" id="large">
-     <h1>Проверка <span class="y">Excel</span></h1>
+   <div class="large bare" id="large">
      <div class="facts">
        <h2>Ошибки в шаблоне — <mark>до</mark> загрузки в Didox, а не после.</h2>
        <p>Проверка Excel-шаблонов по инструкции, автоисправление и поиск дублей маркировки — в одном окне.</p>
@@ -382,14 +389,8 @@ body.still .blob{animation-play-state:paused}
 
    <div class="sec-h">Оформление</div>
    <div class="group">
-     <div class="designs" role="radiogroup" aria-label="Дизайн">
-       <button class="dz dz-classic" data-d="classic" role="radio" aria-checked="false"><i></i>Классика</button>
-       <button class="dz dz-didox" data-d="didox" role="radio" aria-checked="false"><i></i>Didox</button>
-       <button class="dz dz-rain" data-d="rain" role="radio" aria-checked="false"><i></i>Дождь</button>
-       <button class="dz dz-clouds" data-d="clouds" role="radio" aria-checked="false"><i></i>Облака</button>
-       <button class="dz dz-ramp" data-d="ramp" role="radio" aria-checked="false"><i></i>Ramp</button>
-       <button class="dz dz-mono" data-d="mono" role="radio" aria-checked="false"><i></i>Графит</button>
-     </div>
+     <div class="cell"><span class="lbl" id="themeLbl">Тема</span>
+       <span class="lang" role="radiogroup" aria-labelledby="themeLbl"><button data-t="light" role="radio" aria-checked="true">Светлая</button><button data-t="dark" role="radio" aria-checked="false">Ночная</button></span></div>
      <div class="cell" style="border-top:.5px solid var(--sep)"><span class="lbl" id="motionLbl">Анимация фона</span><span class="switch"><input type="checkbox" id="motion" checked aria-labelledby="motionLbl"><i></i></span></div>
    </div>
    <p class="sec-f">Шаблоны и коды проверяются на устройстве и никуда не отправляются.</p>
@@ -1660,20 +1661,18 @@ const mz = $('mkZone');
 ['dragleave', 'drop'].forEach(t => mz.addEventListener(t, e => { e.preventDefault(); mz.classList.remove('drop-over'); }));
 mz.addEventListener('drop', e => { const f = e.dataTransfer.files && e.dataTransfer.files[0]; if (f) mkRunFile(f); });
 
-const DESIGNS = { classic: ['Классика', '%23FF453A', '%23D70015'], didox: ['Didox', '%237C6CFF', '%232F6BFF'], rain: ['Дождь', '%235E7A92', '%2322364A'], mono: ['Графит', '%238E8E93', '%232C2C2E'], clouds: ['Облака', '%2368B8D7', '%23183550'], ramp: ['Ramp', '%230B0B0B', '%23333333'] };
-const icon = document.querySelector('link[rel="icon"]'), iconSrc = icon.href;
-function setDesign(d, quiet) {
-  if (d === 'matrix') d = 'rain';   // раньше здесь была «Матрица»
-  if (!DESIGNS[d]) d = 'classic';
-  document.documentElement.dataset.design = d;
-  document.querySelectorAll('.dz').forEach(b => b.setAttribute('aria-checked', String(b.dataset.d === d)));
-  icon.href = iconSrc.replace('%23FF453A', DESIGNS[d][1]).replace('%23D70015', DESIGNS[d][2]);
-  try { localStorage.setItem('edo-design', d); } catch (e) {}
-  window.bgScene(d);
-  if (!quiet) toast('Дизайн: ' + DESIGNS[d][0]);
+// Только дизайн «Ramp»: светлая или ночная тема, выбор запоминается в браузере
+function setTheme(t, quiet) {
+  if (t !== 'dark') t = 'light';
+  document.documentElement.dataset.theme = t;
+  document.querySelectorAll('[data-t]').forEach(b => b.setAttribute('aria-checked', String(b.dataset.t === t)));
+  try { localStorage.setItem('edo-excel-theme', t); } catch (e) {}
+  window.bgScene('ramp');
+  if (!quiet) toast(t === 'dark' ? 'Ночная тема' : 'Светлая тема');
 }
-document.querySelectorAll('.dz').forEach(b => b.addEventListener('click', () => setDesign(b.dataset.d)));
-setDesign(document.documentElement.dataset.design, true);
+document.querySelectorAll('[data-t]').forEach(b => b.addEventListener('click', () => setTheme(b.dataset.t)));
+setTheme(document.documentElement.dataset.theme, true);
+
 /* ----- прокрутка колёсиком в любом месте страницы ----- */
 // На широком экране у левой колонки и у результата своя прокрутка, и колесо срабатывало только над ними.
 // Если под курсором нечему прокручиваться (заголовок, поля, фон), крутим ту колонку, что ближе к курсору.
