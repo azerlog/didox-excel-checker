@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru" data-design="ramp" data-theme="light">
-<script>try{var t=localStorage.getItem('edo-excel-theme');if(t)document.documentElement.dataset.theme=t;var d=localStorage.getItem('edo-excel-design');if(/^(ramp|glass|term|paper|minimal)$/.test(d))document.documentElement.dataset.design=d}catch(e){}</script>
+<script>try{var t=localStorage.getItem('edo-excel-theme');if(t)document.documentElement.dataset.theme=t;var d=localStorage.getItem('edo-excel-design');if(/^(ramp|glass|term|paper|minimal|sakura)$/.test(d))document.documentElement.dataset.design=d}catch(e){}</script>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -413,6 +413,23 @@ body.still .blob{animation-play-state:paused}
   color-scheme:dark;
 }
 
+:root[data-design="sakura"]{
+  --bg:#FFF4F7; --cell:rgba(255,255,255,.84); --label:#3B2330; --sec:#86626F; --ter:#B596A2; --sep:rgba(214,72,124,.16); --fill:rgba(224,69,123,.07);
+  --thumb:#FFFFFF; --on-tint:#FFFFFF; --tint:#E0457B; --tint-strong:#C9356A; --link:#C2346A; --yellow:#E0457B; --on-yellow:#FFFFFF; --y-text:#B42E60; --green:#3E9B6A;
+  --j-key:#3B2330; --j-str:#B42E60; --j-num:#8B4FA8; --j-null:#B596A2; --mark:#FFD3E2; --mark-ink:#7A1E43;
+  --cv-red:#E0457B; --cv-gray:#F3D7E0; --cv-ink:#3B2330; --cv-green:#3E9B6A; --cv-lime:#FFE1EA;
+  --sk1:#FBE3EC; --sk2:#FFF8F4; --sk-glow:rgba(255,236,214,.9); --sk-petal:#FFC4D6; --sk-petal2:#FF9DBB; --sk-core:#D94B7E; --sk-branch:#5B3A3F;
+  color-scheme:light;
+}
+:root[data-design="sakura"][data-theme="dark"]{
+  --bg:#170D14; --cell:rgba(38,22,32,.82); --label:#F7E6EE; --sec:#CFB0BF; --ter:#977A88; --sep:rgba(255,140,185,.16); --fill:rgba(255,126,173,.08);
+  --thumb:#4A2C3B; --on-tint:#1A0E15; --tint:#FF7EAD; --tint-strong:#F0679A; --link:#FF93BC; --yellow:#F0679A; --on-yellow:#1A0E15; --y-text:#FF93BC; --green:#6CC79A;
+  --j-key:#F7E6EE; --j-str:#FF93BC; --j-num:#D7A6F0; --j-null:#977A88; --mark:#5C2440; --mark-ink:#FFE3EE;
+  --cv-red:#FF7EAD; --cv-gray:#3A2230; --cv-ink:#F7E6EE; --cv-green:#6CC79A; --cv-lime:#4A2236;
+  --sk1:#0E0712; --sk2:#2B1428; --sk-glow:rgba(255,226,236,.32); --sk-petal:#E9A4BC; --sk-petal2:#C86F92; --sk-core:#FF8DB6; --sk-branch:#4A2A3A;
+  color-scheme:dark;
+}
+
 /* общее для новых дизайнов */
 :root[data-design="term"] .blob,:root[data-design="paper"] .blob,:root[data-design="minimal"] .blob{display:none}
 :root[data-design="term"] canvas#bg,:root[data-design="paper"] canvas#bg{opacity:1}
@@ -503,13 +520,27 @@ body.still .blob{animation-play-state:paused}
 :root[data-design="minimal"] .switch input:checked+i{background:var(--label)}
 :root[data-design="minimal"] .dz[aria-checked="true"]{box-shadow:0 0 0 2px var(--label)}
 
+/* «Сакура»: мягкие скруглённые карточки, розовые акценты; за карточками — ветка вишни и падающие лепестки */
+:root[data-design="sakura"] .blob{display:none}
+:root[data-design="sakura"] canvas#bg{opacity:1}
+:root[data-design="sakura"] .group,:root[data-design="sakura"] .hero{border:1px solid var(--sep);border-radius:20px;box-shadow:0 10px 30px -18px rgba(201,53,106,.45);-webkit-backdrop-filter:blur(10px) saturate(1.3);backdrop-filter:blur(10px) saturate(1.3)}
+:root[data-design="sakura"] .group .group{-webkit-backdrop-filter:none;backdrop-filter:none}
+:root[data-design="sakura"] .btn-fill{border-radius:999px;background:linear-gradient(135deg,var(--tint),var(--tint-strong));color:var(--on-tint);box-shadow:0 8px 20px -10px var(--tint)}
+:root[data-design="sakura"] .btn-fill.plain{background:var(--cell);color:var(--link);border:1px solid var(--sep);box-shadow:none}
+:root[data-design="sakura"] .dz,:root[data-design="sakura"] .lang,:root[data-design="sakura"] .lang button,:root[data-design="sakura"] .clear-all{border-radius:14px}
+:root[data-design="sakura"] .facts h2 mark{background:linear-gradient(120deg,var(--mark),color-mix(in srgb,var(--tint) 28%,var(--mark)));color:var(--mark-ink);border-radius:10px}
+:root[data-design="sakura"] .switch input:checked+i{background:var(--tint)}
+:root[data-design="sakura"] .clear-all{border:1px solid var(--sep);box-shadow:none}
+
 /* превью в выборе дизайна */
 .dz-glass i{background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,255,255,.4)) 9px 8px/40px 14px no-repeat,radial-gradient(circle at 80% 22%,#FFF6E1 0 4px,transparent 5px),linear-gradient(135deg,transparent 58%,#FFFFFF 58% 66%,#8099C9 66%) 0 0/50% 100% no-repeat,linear-gradient(225deg,transparent 58%,#FFFFFF 58% 66%,#8099C9 66%) 100% 0/50% 100% no-repeat,linear-gradient(#7FB2E5,#F6DCE8)}
 .dz-term i{background:linear-gradient(#3DFF7A 0 0) 8px 10px/30px 3px no-repeat,linear-gradient(#3DFF7A 0 0) 8px 18px/20px 3px no-repeat,linear-gradient(#3DFF7A 0 0) 8px 26px/7px 8px no-repeat,#07100A}
 .dz-paper i{background:linear-gradient(#107C41,#107C41) 21px 10px/2px 10px no-repeat,linear-gradient(#107C41,#107C41) 21px 10px/21px 2px no-repeat,linear-gradient(#107C41,#107C41) 21px 18px/21px 2px no-repeat,linear-gradient(#107C41,#107C41) 41px 10px/2px 10px no-repeat,linear-gradient(#C6EFCE,#C6EFCE) 1px 20px/20px 9px no-repeat,repeating-linear-gradient(90deg,#C9D3CD 0 1px,transparent 1px 20px),repeating-linear-gradient(#C9D3CD 0 1px,transparent 1px 10px),#FFFFFF}
 .dz-minimal i{background:linear-gradient(#111 0 0) 10px 13px/34px 3px no-repeat,linear-gradient(#BBB 0 0) 10px 21px/22px 3px no-repeat,#FFFFFF;box-shadow:inset 0 0 0 1px #DDD}
+.dz-sakura i{background:radial-gradient(circle at 70% 30%,#D94B7E 0 2px,transparent 3px),radial-gradient(circle at 70% 30%,#FFC4D6 0 7px,transparent 8px),radial-gradient(circle at 46% 48%,#FF9DBB 0 5px,transparent 6px),radial-gradient(circle at 26% 76%,#FFB3CB 0 3px,transparent 4px),linear-gradient(150deg,transparent 46%,#5B3A3F 47% 51%,transparent 52%) 14px -4px/44px 30px no-repeat,linear-gradient(#FBE3EC,#FFF8F4)}
 .designs.x5{grid-template-columns:repeat(5,minmax(0,1fr))}
-@media (max-width:420px){.designs.x5{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.designs.x6{grid-template-columns:repeat(6,minmax(0,1fr))}
+@media (max-width:420px){.designs.x5,.designs.x6{grid-template-columns:repeat(3,minmax(0,1fr))}}
 body.still .sec-h::after{animation:none}
 </style>
 </head>
@@ -561,12 +592,13 @@ body.still .sec-h::after{animation:none}
 
    <div class="sec-h">Оформление</div>
    <div class="group">
-     <div class="designs x5" role="radiogroup" aria-label="Дизайн">
+     <div class="designs x6" role="radiogroup" aria-label="Дизайн">
        <button class="dz dz-ramp" data-d="ramp" role="radio" aria-checked="true"><i></i>Ramp</button>
        <button class="dz dz-glass" data-d="glass" role="radio" aria-checked="false"><i></i>Стекло</button>
        <button class="dz dz-term" data-d="term" role="radio" aria-checked="false"><i></i>Терминал</button>
        <button class="dz dz-paper" data-d="paper" role="radio" aria-checked="false"><i></i>Excel</button>
        <button class="dz dz-minimal" data-d="minimal" role="radio" aria-checked="false"><i></i>Минимал</button>
+       <button class="dz dz-sakura" data-d="sakura" role="radio" aria-checked="false"><i></i>Сакура</button>
      </div>
      <div class="cell" style="border-top:.5px solid var(--sep)"><span class="lbl" id="themeLbl">Тема</span>
        <span class="lang" role="radiogroup" aria-labelledby="themeLbl"><button data-t="light" role="radio" aria-checked="true">Светлая</button><button data-t="dark" role="radio" aria-checked="false">Ночная</button></span></div>
@@ -605,11 +637,11 @@ body.still .sec-h::after{animation:none}
   let C = {};
   const LINK = 150;
   let hold = false;
-  const SCENES = { classic: 'net', didox: 'docs', rain: 'rain', mono: 'glyphs', clouds: 'clouds', ramp: 'dots', glass: 'snow', term: 'term', paper: 'cells', minimal: 'none' };
+  const SCENES = { classic: 'net', didox: 'docs', rain: 'rain', mono: 'glyphs', clouds: 'clouds', ramp: 'dots', glass: 'snow', term: 'term', paper: 'cells', minimal: 'none', sakura: 'sakura' };
   let scene = 'net', drops = [], splashes = [], docs = [], flash = 0, nextFlash = 0, dotsT = 0, tlines = [], tNext = 0, lit = [], cNext = 0;
   function colors() {
     const cs = getComputedStyle(document.documentElement), g = n => cs.getPropertyValue(n).trim();
-    C = { sky1: g('--sky1'), sky2: g('--sky2'), m: [g('--m1'), g('--m2'), g('--m3')], snow: g('--snow'), star: g('--star'), dark: cs.colorScheme === 'dark', red: g('--cv-red'), gray: g('--cv-gray'), ink: g('--cv-ink'), yellow: g('--yellow'), lime: g('--cv-lime') || '#C8DA00', green: g('--cv-green') || '#5E8C1A' };
+    C = { sk: { sky1: g('--sk1'), sky2: g('--sk2'), glow: g('--sk-glow'), petal: g('--sk-petal'), petal2: g('--sk-petal2'), core: g('--sk-core'), branch: g('--sk-branch') }, sky1: g('--sky1'), sky2: g('--sky2'), m: [g('--m1'), g('--m2'), g('--m3')], snow: g('--snow'), star: g('--star'), dark: cs.colorScheme === 'dark', red: g('--cv-red'), gray: g('--cv-gray'), ink: g('--cv-ink'), yellow: g('--yellow'), lime: g('--cv-lime') || '#C8DA00', green: g('--cv-green') || '#5E8C1A' };
   }
   function mkGlyph(any) {
     return { x: Math.random() * W, y: any ? Math.random() * H : H + 20, v: 10 + Math.random() * 22, ch: CH[Math.random() * CH.length | 0], sz: 9 + Math.random() * 7, z: .3 + Math.random() * .7, sw: Math.random() * 6.28 };
@@ -624,7 +656,7 @@ body.still .sec-h::after{animation:none}
     glyphs = Array.from({ length: Math.min(Math.round(W * H / 14000), 140) }, () => mkGlyph(true));
     drops = Array.from({ length: Math.min(Math.round(W * H / 4500), 280) }, () => mkDrop(true));
     docs = Array.from({ length: Math.min(Math.round(W * H / 26000), 50) }, () => mkDoc(true));
-    packets = []; tlines = []; lit = []; ridges = [];
+    packets = []; tlines = []; lit = []; ridges = []; petals = []; branchCv = null;
     if (reduce.matches || paused) draw(performance.now());
   }
   // дождь: косые капли, ветер следует за мышью, внизу всплески; изредка далёкая молния
@@ -766,6 +798,83 @@ body.still .sec-h::after{animation:none}
       ctx.fillStyle = C.green; ctx.fillRect(x + cw - 3, y + ch - 3, 6, 6);
     }
   }
+  // «Сакура»: из правого верхнего угла тянется ветка цветущей вишни, с неё летят лепестки — вращаются и переворачиваются.
+  // Мышь — это ветер (ветка чуть качается, лепестки сносит), рядом с курсором лепестки разлетаются,
+  // клик — порыв ветра и горсть лепестков с ветки.
+  let petals = [], branchCv = null, tips = [];
+  function mkPetal(any, at) {
+    const z = .3 + Math.random() * .7, p = at || { x: any ? Math.random() * W : Math.random() * (W * 1.2) - W * .1, y: any ? Math.random() * H : -20 - Math.random() * 80 };
+    return { x: p.x, y: p.y, z, s: 3 + z * 7 + Math.random() * 2, v: 16 + z * 38, rot: Math.random() * 6.28, vr: (Math.random() - .5) * 2.2,
+      flip: Math.random() * 6.28, vf: 1.2 + Math.random() * 2.4, sw: Math.random() * 6.28, vx: 0, vy: 0, c: Math.random() < .55 };
+  }
+  function flower(g, x, y, r, a) {
+    for (let k = 0; k < 5; k++) {
+      const t = a + k * 1.2566, cx = x + Math.cos(t) * r * .62, cy = y + Math.sin(t) * r * .62;
+      g.fillStyle = k % 2 ? C.sk.petal : C.sk.petal2; g.globalAlpha = .95;
+      g.beginPath(); g.ellipse(cx, cy, r * .62, r * .46, t, 0, 6.2832); g.fill();
+    }
+    g.globalAlpha = 1; g.fillStyle = C.sk.core; g.beginPath(); g.arc(x, y, r * .22, 0, 6.2832); g.fill();
+  }
+  function buildBranch() {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    branchCv = document.createElement('canvas'); branchCv.width = W * dpr; branchCv.height = H * dpr;
+    const g = branchCv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.lineCap = 'round'; g.strokeStyle = C.sk.branch;
+    tips = [];
+    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const L = Math.min(Math.max(W * .2, 100), 260), blooms = [];   // на телефоне ветка меньше, чтобы не мешать тексту
+    (function br(x, y, a, len, w, d) {
+      const ex = x + Math.cos(a) * len, ey = y + Math.sin(a) * len, bend = (rnd() - .5) * len * .35;
+      g.lineWidth = w; g.globalAlpha = 1; g.beginPath(); g.moveTo(x, y);
+      g.quadraticCurveTo((x + ex) / 2 + Math.sin(a) * bend, (y + ey) / 2 - Math.cos(a) * bend, ex, ey); g.stroke();
+      for (let k = 1; k <= 3; k++) if (d < 4 && rnd() < .7) blooms.push([x + (ex - x) * k / 3.4, y + (ey - y) * k / 3.4, 4 + rnd() * 5]);
+      if (d <= 0 || len < 14) { tips.push([ex, ey]); blooms.push([ex, ey, 6 + rnd() * 5]); return; }
+      const n = d > 3 ? 2 : 2 + (rnd() < .4);
+      for (let k = 0; k < n; k++) br(ex, ey, a + (rnd() - .5) * 1.25 + (k - (n - 1) / 2) * .5, len * (.62 + rnd() * .16), Math.max(1, w * .62), d - 1);
+    })(W + 12, H * .04, Math.PI * .86, L, Math.max(7, L / 22), 5);
+    const k = Math.min(W, 900) / 900 * .5 + .7;
+    blooms.forEach(([x, y, r]) => flower(g, x + (rnd() - .5) * 8, y + (rnd() - .5) * 8, r * k, rnd() * 6.28));
+    petals = Array.from({ length: Math.min(Math.round(W * H / 9000), 170) }, () => mkPetal(true));
+  }
+  addEventListener('pointerdown', e => {
+    if (scene !== 'sakura') return;
+    petals.forEach(f => { const dx = f.x - e.clientX, dy = f.y - e.clientY, d = Math.hypot(dx, dy) || 1; if (d < 240) { const k = (1 - d / 240) * 460; f.vx += dx / d * k; f.vy += dy / d * k; f.vr += (Math.random() - .5) * 6; } });
+    for (let k = 0; k < 14 && tips.length; k++) { const t = tips[Math.random() * tips.length | 0]; petals.push(mkPetal(false, { x: t[0] - mx * 6, y: t[1] })); }
+    if (petals.length > 260) petals.splice(0, petals.length - 260);
+  }, { passive: true });
+  function drawSakura(dt, now) {
+    if (!branchCv) buildBranch();
+    const sky = ctx.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, C.sk.sky1); sky.addColorStop(1, C.sk.sky2);
+    ctx.globalAlpha = 1; ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
+    // мягкий свет: днём — солнце, ночью — луна
+    const gx = W * .72 - mx * 10, gy = H * .1 + 24, gr = Math.max(W, H) * (C.dark ? .22 : .45), glow = ctx.createRadialGradient(gx, gy, 0, gx, gy, gr);
+    glow.addColorStop(0, C.sk.glow); glow.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = glow; ctx.fillRect(0, 0, W, H);
+    const soft = W < 700 ? .45 : 1;   // на телефоне текст лежит прямо поверх ветки — делаем её прозрачнее
+    if (C.dark) { ctx.fillStyle = '#FFF1F6'; ctx.globalAlpha = .7 * soft; ctx.beginPath(); ctx.arc(gx, gy, 18, 0, 6.2832); ctx.fill(); }
+    // ветка: качается от ветра и чуть дышит сама
+    ctx.globalAlpha = (C.dark ? .85 : 1) * soft;
+    ctx.drawImage(branchCv, -mx * 8 + Math.sin(now / 2600) * 2, Math.sin(now / 3100) * 1.5, W, H);
+    // лепестки
+    const wind = mx * 120 + Math.sin(now / 3500) * 16 + 14, boost = 1 + burst * 1.4, damp = Math.pow(.3, dt);
+    petals.forEach(f => {
+      if (px > -900) { const dx = f.x - px, dy = f.y - py, d = Math.hypot(dx, dy) || 1; if (d < 100) { const k = (1 - d / 100) * 800 * dt; f.vx += dx / d * k; f.vy += dy / d * k; } }
+      f.vx *= damp; f.vy *= damp; f.sw += dt * (.8 + f.z);
+      f.x += ((wind + Math.sin(f.sw) * 26) * f.z + f.vx) * dt;
+      f.y += (f.v * boost + Math.cos(f.sw * 1.3) * 8 + f.vy) * dt;
+      f.rot += f.vr * dt; f.flip += f.vf * dt;
+      if (f.y > H + 20 || f.x < -60 || f.x > W + 60) Object.assign(f, mkPetal(false));
+      const sx = Math.cos(f.flip), s = f.s;
+      ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.rot); ctx.scale(Math.abs(sx) < .12 ? (sx < 0 ? -.12 : .12) : sx, 1);
+      ctx.globalAlpha = (C.dark ? .6 : .9) * (.45 + .55 * f.z);
+      ctx.fillStyle = f.c ? C.sk.petal : C.sk.petal2;
+      ctx.beginPath(); ctx.moveTo(-s * .2, -s); ctx.lineTo(0, -s * .74); ctx.lineTo(s * .2, -s);
+      ctx.bezierCurveTo(s * .95, -s * .55, s * .62, s * .62, 0, s);
+      ctx.bezierCurveTo(-s * .62, s * .62, -s * .95, -s * .55, -s * .2, -s);
+      ctx.fill(); ctx.restore();
+    });
+    ctx.globalAlpha = 1;
+  }
   // документы: всплывают снизу, покачиваются и по пути получают подпись — галочку в кружке
   function mkDoc(any) {
     return { x: Math.random() * W, y: any ? Math.random() * H : H + 60, v: 10 + Math.random() * 16, dx: (Math.random() - .5) * 8,
@@ -892,6 +1001,7 @@ body.still .sec-h::after{animation:none}
     else if (scene === 'term') drawTerm(dt, now);
     else if (scene === 'snow') drawSnow(dt, now);
     else if (scene === 'cells') drawCells(dt);
+    else if (scene === 'sakura') drawSakura(dt, now);
 
     // символы base64
     const boost = 1 + burst * 7; burst = Math.max(0, burst - dt * .9);
@@ -2079,7 +2189,7 @@ const mz = $('mkZone');
 mz.addEventListener('drop', e => { const f = e.dataTransfer.files && e.dataTransfer.files[0]; if (f) mkRunFile(f); });
 
 // Дизайн (Ramp по умолчанию) и тема — светлая или ночная; выбор запоминается в браузере
-const DESIGNS = { ramp: 'Ramp', glass: 'Стекло', term: 'Терминал', paper: 'Excel', minimal: 'Минимал' };
+const DESIGNS = { ramp: 'Ramp', glass: 'Стекло', term: 'Терминал', paper: 'Excel', minimal: 'Минимал', sakura: 'Сакура' };
 function setDesign(d, quiet) {
   if (!DESIGNS[d]) d = 'ramp';
   document.documentElement.dataset.design = d;
